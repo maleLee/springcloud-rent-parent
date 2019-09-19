@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="css/index.css">
+	</head>
+
+	<body>
+		<div id="app">
+			<el-breadcrumb separator-class="el-icon-arrow-right" style="margin: 20px 0;">
+				<el-breadcrumb-item :to="{ path: '/' }">贷款管理</el-breadcrumb-item>
+				<el-breadcrumb-item>贷款查看</el-breadcrumb-item>
+			</el-breadcrumb>
+			<el-main>
+				<el-form :inline="true" class="demo-form-inline">
+					<el-form-item label="条件查询">
+						<el-select v-model="query.status" placeholder="请选择条件进行查询">
+							<el-option label="用户编号" value="1"></el-option>
+							<el-option label="订单状态" value="2"></el-option>
+						</el-select>
+					</el-form-item>
+					<el-form-item>
+						<el-input placeholder="请输入信息" v-model="query.nickname" @keyup.enter.native="tableShow(1)"></el-input>
+					</el-form-item>
+					<el-form-item>
+						<el-button type="primary" @click="tableShow(1)">查询</el-button>
+					</el-form-item>
+				</el-form>
+				<el-table :data="tableData" stripe style="width: 100%">
+					<el-table-column prop="id" label="订单编号" width="180">
+					</el-table-column>
+					<el-table-column prop="userId" label="用户编号" width="280" show-overflow-tooltip=true>
+					</el-table-column>
+					<el-table-column prop="loanMoney" label="贷款金额">
+					</el-table-column>
+					<el-table-column prop="payTimes" label="还款期数">
+					</el-table-column>
+					<el-table-column prop="rentType" label="贷款类型">
+					</el-table-column>
+					<el-table-column prop="loanTime" label="贷款时间">
+					</el-table-column>
+					<el-table-column prop="updateTime" label="更新时间">
+					</el-table-column>
+					<el-table-column prop="status" label="贷款状态">
+					</el-table-column>
+					<el-table-column fixed="right" label="操作" width="200">
+						<template slot-scope="scope">
+							<el-button type="primary" @click="edit(scope.row)">更新</el-button>
+							<el-button type="danger" @click="remove(scope.row)">删除</el-button>
+						</template>
+					</el-table-column>
+				</el-table>
+				<div class="block">
+					<el-pagination @current-change="tableShow" :current-page="currentPage" :page-size="pagesize" layout="total, prev, pager, next, jumper" :total="total">
+					</el-pagination>
+				</div>
+				<el-dialog title="贷款信息" :visible.sync="dialogFormVisible">
+					<el-form :model="form" :rules="rules" ref="form">
+						<input type="hidden" v-model="form.id" />
+						<el-form-item label="状态" prop="state" :label-width="formLabelWidth">
+							<el-radio v-model="form.state" label="30003">一级审核通过</el-radio>
+							<el-radio v-model="form.state" label="30005">审核未通过</el-radio>
+							<el-radio v-model="form.state" label="30007">已发布</el-radio>
+						</el-form-item>
+					</el-form>
+					<div slot="footer" class="dialog-footer">
+						<el-button @click="cancel">取 消</el-button>
+						<el-button type="primary" @click="save">确 定</el-button>
+					</div>
+				</el-dialog>
+			</el-main>
+		</div>
+
+	</body>
+	<!-- 先引入 Vue -->
+	<script src="js/vue.js"></script>
+	<!-- 引入组件库 -->
+	<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<!-- 引入组件库 -->
+	<script src="js/index.js"></script>
+	<script>
+		var app = new Vue({
+			el: "#app",
+			data: {
+				formLabelWidth: "120px",
+				dialogFormVisible: false,
+				tableData: [{
+					id:1,
+					userId:1,
+					loanMoney:9000,
+					payTimes:12,
+					rentType:"先息后本",
+					loanTime:"2019-09-05:17:32:10",
+					updateTime:"2019-09-05:17:32:10",
+					status:"一级审核通过"
+				},{
+					id:2,
+					userId:2,
+					loanMoney:8500,
+					payTimes:12,
+					rentType:"等额本息",
+					loanTime:"2019-09-05:17:32:10",
+					updateTime:"2019-09-05:17:32:10",
+					status:"未审核"
+				},{
+					id:3,
+					userId:3,
+					loanMoney:9000,
+					payTimes:12,
+					rentType:"先息后本",
+					loanTime:"2019-09-05:17:32:10",
+					updateTime:"2019-09-05:17:32:10",
+					status:"已放贷"
+				},{
+					id:4,
+					userId:4,
+					loanMoney:15000,
+					payTimes:12,
+					rentType:"先息后本",
+					loanTime:"2019-09-05:17:32:10",
+					updateTime:"2019-09-05:17:32:10",
+					status:"审核未通过"
+				},{
+					id:5,
+					userId:5,
+					loanMoney:5000,
+					payTimes:12,
+					rentType:"先息后本",
+					loanTime:"2019-09-05:17:32:10",
+					updateTime:"2019-09-05:17:32:10",
+					status:"一级审核通过"
+				}],
+				form: {},
+				currentPage: 1,
+				total: 0,
+				pagesize: 3,
+				query: {},
+				rules: {
+					state: [{
+						required: true,
+						message: '请选择处理状态',
+						trigger: 'blur'
+					}]
+				}
+			},
+			mounted: function() { //在这里实现onload事件
+				this.tableShow(1);
+
+			},
+			methods: {
+				tableShow: function(currentpage) {
+					//做异步请求的函数
+					var _this = this;
+					$.post("http://localhost:8080/WeatherManage/feedback/list/" + currentpage + "/" + this.pagesize, this.query, function(page) {
+						_this.tableData = page.content;
+						_this.total = page.totalElements;
+					})
+				},
+				add: function() {
+					this.dialogFormVisible = true;
+					this.form = {};
+				},
+				save: function() {
+					var _this = this;
+					this.$refs["form"].validate(function(valid) {
+						if(valid) {
+							_this.dialogFormVisible = false;
+							$.post("http://localhost:8080/WeatherManage/feedback/save", _this.form, function(data) {
+								_this.$notify({
+									title: '成功',
+									message: data.message,
+									type: 'success'
+								});
+							})
+							setTimeout(function() {
+								location.href = "feedback.html"
+							}, 1000);
+						} else {
+							console.log('error submit!!');
+							return false;
+						}
+					});
+
+				},
+				edit: function(row) {
+					this.dialogFormVisible = true;
+					this.form = row;
+				},
+				cancel: function() {
+					this.dialogFormVisible = false;
+					this.tableShow(1);
+				},
+				remove: function(row) {
+					var _this = this;
+					$.post("http://localhost:8080/WeatherManage/feedback/remove/" + row.id, function(data) {
+						_this.$notify({
+							title: '成功',
+							message: data.message,
+							type: 'success'
+						});
+					})
+					setTimeout(function() {
+						location.href = "feedback.html"
+					}, 1000);
+				}
+			}
+		})
+	</script>
+
+</html>

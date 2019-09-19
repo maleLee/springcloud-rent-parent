@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="css/index.css">
+	</head>
+
+	<body>
+		<div id="app">
+			<el-breadcrumb separator-class="el-icon-arrow-right" style="margin: 20px 0;">
+				<el-breadcrumb-item :to="{ path: '/' }">房源管理</el-breadcrumb-item>
+				<el-breadcrumb-item>房源详情</el-breadcrumb-item>
+			</el-breadcrumb>
+			<el-main>
+				<el-form :inline="true" class="demo-form-inline">
+					<el-form-item label="条件查询">
+						<el-select v-model="query.status" placeholder="请选择条件进行查询">
+							<el-option label="房东" value="1"></el-option>
+							<el-option label="订单状态" value="2"></el-option>
+						</el-select>
+					</el-form-item>
+					<el-form-item>
+						<el-input placeholder="请输入信息" v-model="query.nickname" @keyup.enter.native="tableShow(1)"></el-input>
+					</el-form-item>
+					<el-form-item>
+						<el-button type="primary" @click="tableShow(1)">查询</el-button>
+					</el-form-item>
+				</el-form>
+				<el-table :data="tableData" stripe style="width: 100%">
+					<el-table-column prop="id" label="id" width="180">
+					</el-table-column>
+					<el-table-column prop="userId" label="发布人" width="180">
+					</el-table-column>
+					<el-table-column prop="title" label="标题">
+					</el-table-column>
+					<el-table-column prop="trapeze" label="经纬度">
+					</el-table-column>
+					<el-table-column prop="area" label="地区">
+					</el-table-column>
+					<el-table-column prop="community" label="小区名">
+					</el-table-column>
+					<el-table-column prop="pay" label="租金">
+					</el-table-column>
+					<el-table-column prop="houseType" label="户型">
+					</el-table-column>
+					<el-table-column prop="houseSize" label="面积">
+					</el-table-column>
+					<el-table-column prop="floor" label="楼层">
+					</el-table-column>
+					<el-table-column prop="orientation" label="朝向">
+					</el-table-column>
+					<el-table-column prop="chargeStrategy" label="压付策略">
+					</el-table-column>
+					<el-table-column prop="createTime" label="发布时间">
+					</el-table-column>
+					<el-table-column prop="updateTime" label="修改时间">
+					</el-table-column>
+					<el-table-column prop="status" label="房屋状态">
+					</el-table-column>
+					<el-table-column fixed="right" label="操作" width="200">
+						<template slot-scope="scope">
+							<el-button type="primary" @click="edit(scope.row)">查看</el-button>
+							<el-button type="danger" @click="remove(scope.row)" v-if="scope.row.adminType!=1">删除</el-button>
+						</template>
+					</el-table-column>
+				</el-table>
+				<div class="block">
+					<el-pagination @current-change="tableShow" :current-page="currentPage" :page-size="pagesize" layout="total, prev, pager, next, jumper" :total="total">
+					</el-pagination>
+				</div>
+				<el-dialog title="详细信息" :visible.sync="dialogFormVisible">
+					<el-form :model="form" ref="form">
+						<el-form-item label="房源类型" prop="rentType" :label-width="formLabelWidth">
+							<el-input v-model="form.rentType"></el-input>
+						</el-form-item>
+						<el-form-item label="地址" prop="rentAddress" :label-width="formLabelWidth" v-if="false">
+							<el-input v-model="form.rentAddress"></el-input>
+						</el-form-item>
+						<el-form-item label="房间设施" prop="roomFacilities" :label-width="formLabelWidth">
+							<el-input v-model="form.roomFacilities"></el-input>
+						</el-form-item>
+						<el-form-item label="房产证" prop="housePropertyCertification" :label-width="formLabelWidth">
+							<img  :src="form.housePropertyCertification" alt="这里是房产证图片"/>
+						</el-form-item>
+						<el-form-item label="实景图" prop="realPicture" :label-width="formLabelWidth">
+							<img  :src="form.realPicture" alt="这里是实景图片" />
+						</el-form-item>
+						<el-form-item label="房屋描述" prop="houseDescription" :label-width="formLabelWidth">
+							<el-input v-model="form.houseDescription"></el-input>
+						</el-form-item>
+					</el-form>
+					<div slot="footer" class="dialog-footer">
+						<el-button @click="cancel">取 消</el-button>
+						<el-button type="primary" @click="save">确 定</el-button>
+					</div>
+				</el-dialog>
+			</el-main>
+		</div>
+
+	</body>
+	<!-- 先引入 Vue -->
+	<script src="js/vue.js"></script>
+	<!-- 引入组件库 -->
+	<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<!-- 引入组件库 -->
+	<script src="js/index.js"></script>
+	<script src="js/global.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		var app = new Vue({
+			el: "#app",
+			data: {
+				formLabelWidth: "120px",
+				dialogFormVisible: false,
+				tableData: [{
+					id:1,
+					userId:"房东1",
+					title:"优质房源1",
+					trapeze:"192.11,90.55",
+					area:"金水区",
+					community:"风铃居",
+					pay:2000,
+					houseType:"两室一厅",
+					houseSize:119,
+					floor:"11F",
+					orientation:"南",
+					chargeStrategy:"押一付三",
+					createTime:"2019-09-05 16:47:50",
+					updateTime:"2019-09-05 16:47:50",
+					status:"已发布"
+				},{
+					id:2,
+					userId:"房东2",
+					title:"优质房源2",
+					trapeze:"192.11,90.55",
+					area:"金水区",
+					community:"新庄",
+					pay:2900,
+					houseType:"三室两厅",
+					houseSize:150,
+					floor:"5F",
+					orientation:"南",
+					chargeStrategy:"押一付三",
+					createTime:"2019-09-05 16:47:50",
+					updateTime:"2019-09-05 16:47:50",
+					status:"审核未通过"
+				},{
+					id:3,
+					userId:"经纪人1",
+					title:"优质房源3",
+					trapeze:"192.11,90.55",
+					area:"金水区",
+					community:"牛顿国际",
+					pay:2900,
+					houseType:"三室两厅",
+					houseSize:150,
+					floor:"5F",
+					orientation:"南",
+					chargeStrategy:"押一付三",
+					createTime:"2019-09-05 16:47:50",
+					updateTime:"2019-09-05 16:47:50",
+					status:"已入住"
+				},{
+					id:4,
+					userId:"经纪人2",
+					title:"优质房源4",
+					trapeze:"192.11,90.55",
+					area:"金水区",
+					community:"新庄",
+					pay:2900,
+					houseType:"三室两厅",
+					houseSize:150,
+					floor:"5F",
+					orientation:"南",
+					chargeStrategy:"押一付三",
+					createTime:"2019-09-05 16:47:50",
+					updateTime:"2019-09-05 16:47:50",
+					status:"已发布"
+				},{
+					id:5,
+					userId:"经纪人3",
+					title:"优质房源5",
+					trapeze:"192.11,90.55",
+					area:"金水区",
+					community:"新庄",
+					pay:2900,
+					houseType:"三室两厅",
+					houseSize:150,
+					floor:"3F",
+					orientation:"南",
+					chargeStrategy:"押一付三",
+					createTime:"2019-09-05 16:47:50",
+					updateTime:"2019-09-05 16:47:50",
+					status:"一级审核通过"
+				}],
+				form: {
+					rentType:"商品房",
+					rentAddress:"金水区",
+					roomFacilities:"空调、彩电、精装修",
+					housePropertyCertification:"img/my.png",
+					realPicture:"img/my.png",
+					houseDescription:"背靠大海，冬暖花开"
+				},
+				currentPage: 1,
+				total: 0,
+				pagesize: 3,
+				query: {}
+			},
+			mounted: function() { //在这里实现onload事件
+				this.tableShow(1);
+
+			},
+			methods: {
+				formatType: function(row, column) {
+					return row.adminType == '1' ? "超级管理员" : "后台管理员";
+				},
+				formatPassword: function(row, column) {
+					return "******";
+				},
+				tableShow: function(currentpage) {
+					//做异步请求的函数
+					var _this = this;
+					$.post(server.domain + "admin/list/" + currentpage + "/" + this.pagesize, this.query, function(page) {
+						_this.tableData = page.content;
+						_this.total = page.totalElements;
+					})
+				},
+				save: function() {
+					var _this = this;
+					this.$refs["form"].validate(function(valid) {
+						if(valid) {
+							_this.dialogFormVisible = false;
+							$.post("http://localhost:8080/WeatherManage/admin/save", _this.form, function(data) {
+								_this.$notify({
+									title: '成功',
+									message: data.message,
+									type: 'success'
+								});
+							})
+							setTimeout(function() {
+								location.reload()
+							}, 1000);
+						} else {
+							console.log('error submit!!');
+							return false;
+						}
+					});
+
+				},
+				cancel: function() {
+					this.dialogFormVisible = false;
+					this.tableShow(1);
+				},
+				edit: function(row) {
+					this.dialogFormVisible = true;
+				},
+				remove: function(row) {
+					var _this = this;
+					this.$confirm('此操作将永久删除该条数据, 是否继续?', '提示', {
+						confirmButtonText: '确定',
+						cancelButtonText: '取消',
+						type: 'warning'
+					}).then(function() {
+						$.post("http://localhost:8080/WeatherManage/admin/remove/" + row.id, function(data) {
+							_this.$notify({
+								title: '成功',
+								message: data.message,
+								type: 'success'
+							});
+						})
+						setTimeout(function() {
+							location.reload()
+						}, 1000);
+					}).catch(function() {
+						this.$message({
+							type: 'info',
+							message: '已取消删除'
+						});
+					});
+				}
+			}
+		})
+	</script>
+
+</html>

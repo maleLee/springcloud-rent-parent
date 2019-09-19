@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aaa.lee.rent.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.aaa.lee.rent.model.User" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="salt" property="salt" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="redundant" property="redundant" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="selectUserByUsername" parameterType="string" resultMap="BaseResultMap">
+    select * from el_user where username = #{username}
+  </select>
+
+  <select id="selectMenuByUsername" parameterType="string" resultType="com.aaa.lee.rent.vo.TreeVo">
+    select ep.id, ep.permission_chinese_name title, ep.menu_icon icon, ep.menu_url href from el_user lu
+        inner join el_user_role eur on eur.user_id = lu.id
+        inner join el_role_permission erp on erp.role_id = eur.role_id
+        inner join el_permission ep on ep.id = erp.permission_id
+    where lu.username = #{username}
+  </select>
+
+</mapper>

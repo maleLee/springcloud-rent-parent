@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="/static/css/index.css">
+
+		<style scoped>
+			.login-wrap {
+				box-sizing: border-box;
+				width: 100%;
+				height: 100%;
+				padding-top: 10%;
+				position: absolute;
+				top: calc(20%);
+				background-position: center right;
+				background-size: 100%;
+			}
+			
+			.login-container {
+				border-radius: 10px;
+				margin: 0px auto;
+				width: 350px;
+				padding: 30px 35px 15px 35px;
+				background: #fff;
+				border: 1px solid #eaeaea;
+				text-align: left;
+				box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.1);
+			}
+			
+			.title {
+				margin: 0px auto 40px auto;
+				text-align: center;
+				color: #505458;
+			}
+			
+			body {
+				background-image: url(/static/img/elive.jpg);
+				background-size: 100%;
+			}
+		</style>
+		<title>速看天气欢迎您！</title>
+	</head>
+
+	<body>
+		<div class="login-wrap" id="login">
+			<el-form :model="ruleForm" label-width="0px" class="login-container">
+				<img src="/static/img/app_icon.png" style="display: inline-block;"/>
+				<b class="title" style="font-size: 30px; margin-left: 40px;">用户登录</b>
+				<el-form-item prop="username">
+					<el-input type="text" v-model="ruleForm.username" auto-complete="off" placeholder="账号"></el-input>
+				</el-form-item>
+				<el-form-item prop="password">
+					<el-input type="password" v-model="ruleForm.password" auto-complete="off" placeholder="密码" @keyup.enter.native="submitForm"></el-input>
+				</el-form-item>
+				<el-form-item style="width:100%;">
+					<el-button type="primary" style="width:100%;" @click="submitForm">登录</el-button>
+				</el-form-item>
+			</el-form>
+		</div>
+
+	</body>
+	<!-- 先引入 Vue -->
+	<script type="text/javascript" src="/static/js/vue.js"></script>
+	<script type="text/javascript" src="/static/js/jquery.js"></script>
+	<!-- 引入组件库 -->
+	<script type="text/javascript" src="/static/js/index.js"></script>
+	<script>
+		new Vue({
+			el: '#login',
+			data: {
+				ruleForm: {
+					username: "",
+					password: ""
+				}
+			},
+			methods: {
+				submitForm: function() {
+					if(this.ruleForm.username == "" || this.ruleForm.password == "") {
+						this.$message("请输入账号密码！");
+						return;
+					}
+					var _this = this;
+					$.post("/login", {
+						username: this.ruleForm.username,
+						password: this.ruleForm.password
+					}, function(data) {
+						if(data.code == "200" && data.data.username != null) {
+							window.localStorage.setItem("id", data.data.id);
+							window.localStorage.setItem("username", data.data.username);
+							location.href = "toIndexPage";
+						} else {
+							_this.$message(data.msg);
+						}
+						/*if(data.username != null) {
+							window.localStorage.setItem("id", data.id);
+							window.localStorage.setItem("nickname", data.nickname);
+							window.localStorage.setItem("adminType", data.adminType);
+							location.href = "index.html";
+						} else {
+							_this.$message("登陆失败");
+						}*/
+					});
+				}
+			}
+		});
+	</script>
+
+</html>

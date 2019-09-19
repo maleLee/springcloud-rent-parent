@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<!-- 引入样式 -->
+		<!-- 先引入 Vue -->
+		<script src="/static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="/static/js/vue.js"></script>
+		<!-- 引入组件库 -->
+		<script type="text/javascript" src="/static/js/index.js"></script>
+		<link rel="stylesheet" href="/static/css/index.css">
+				<style type="text/css">
+			a:hover {
+				color: yellow;
+			}
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			li {
+				list-style: none;
+			}
+			
+			body {
+				line-height: 1.5;
+				font-size: 14px;
+			}
+			
+			.scroll {
+				display: inline-block;
+				overflow: hidden;
+				position: relative;
+				height: 50px;
+			}
+			
+			.scroll ul {
+				transform: translateY(0);
+			}
+			
+			.animate {
+				-webkit-transition: all .3s ease-out;
+			}
+			
+			.scroll li {
+				overflow: hidden;
+				display: -webkit-box;
+				margin-left: 10px;
+				width: 200px;
+				height: 50px;
+				line-height: 30px;
+				color: #333;
+				text-overflow: ellipsis;
+				-webkit-line-clamp: 1;
+				-webkit-box-orient: vertical;
+				white-space: normal;
+			}
+			
+			.scroll li img {
+				margin-top: 20px;
+				margin-right: 12px;
+				width: 20px;
+				height: 20px;
+			}
+		</style>
+		<title>Easylive后台管理</title>
+	</head>
+
+	<body>
+		<script type="text/javascript" src="/static/js/canvas-nest.min.js" ></script>
+		<canvas height="926" width="1920" style="position: fixed; top: 0px; left: 0px; z-index: -1; opacity: 0.5;" id="c_n1"></canvas>
+		<el-container id="app">
+			<el-header style="height:130px;border-bottom: 1px solid lightgray;">
+				<div style="text-align: center;">
+					<img src="/static/img/my.png" height="50px" style="display: inline;margin-right: 20px;" />
+					<span style="display: inline; font-size: 30px;">欢迎<span id="user"></span>登陆Easy-live管理页面</span>
+				</div>
+				<!--<div style="position: absolute;top: 20px; right: 0;">
+					今日天气：
+					<div id="weather"></div>
+				</div>-->
+				<div style="position: absolute;">
+					管理员：<b>admin:<em>{{nickname}}</em></b>
+					<el-button id="exit" type="info" style="margin-top: 3px; color: white; display: block;" @click="back">
+						退出
+					</el-button>
+				</div>
+			</el-header>
+			<el-container style="height: 1000px">
+				<el-aside width="230px">
+					<el-menu default-active="2" class="el-menu-vertical-demo">
+						<el-submenu v-for="(m1,idx1) in root.list" :key="m1.id" :index="m1.id">
+							<template slot="title">
+								<i :class="m1.icon"></i>
+								<span>{{m1.title}}</span>
+							</template>
+							<el-menu-item-group>
+								<el-menu-item v-for="(m2,idx2) in m1.list" :key="m2.id" :index="m2.id">
+									<a :href="m2.href" style="text-decoration: none;color:inherit" target="ifm">
+										<i :class="m2.icon"></i>
+										<span>{{m2.title}}</span>
+									</a>
+								</el-menu-item>
+							</el-menu-item-group>
+						</el-submenu>
+					</el-menu>
+				</el-aside>
+				<el-main>
+					<iframe name="ifm" frameborder="0" src="/toMainPage" border="0px" scrolling="auto" style="height: 900px;width: 100%;">
+						aaa
+					</iframe>
+				</el-main>
+			</el-container>
+			<div class="scroll" style="text-align: center; position: fixed; bottom:50px;">
+				<ul>
+					<li><img src="/static/img/xlb.png" /><span>当前时间：{{now}}</span></li>
+					<li id="fankui"><img src="img/xlb.png" />有新的用户反馈!</li>
+					<!--<li id="shijing"><img src="img/xlb.png" />有新的实景上传!</li>-->
+				</ul>
+			</div>
+		</el-container>
+		<div style="text-align: center; position: fixed; bottom: 20px;">当前IP:<span id="ip" style="color: green;"></span></div>
+	</body>
+
+	<script>
+		new Vue({
+			el: '#app',
+			data: {
+				now: 1,
+				formLabelWidth: "120px",
+				dialogFormVisible: false,
+				root: {
+					/*list:[{
+						id:1,
+						title:"用户管理",
+						icon:"el-icon-success",
+						list:[{
+							id:2,
+							title:"用户信息",
+							href:"admin.html",
+							icon:"el-icon-news"
+						}]
+					},{
+						id:3,
+						title:"权限菜单管理",
+						icon:"el-icon-setting",
+						list:[{
+							id:4,
+							title:"权限信息",
+							href:"permission.html",
+							icon:"el-icon-circle-plus"
+						}]
+					},{
+						id:5,
+						title:"经纪人中心",
+						icon:"el-icon-info",
+						list:[{
+							id:6,
+							title:"个人中心",
+							href:"myinfo.html",
+							icon:"el-icon-message"
+						},{
+							id:7,
+							title:"房源信息",
+							href:"agent-zf.html",
+							icon:"el-icon-edit"
+						}]
+					},{
+						id:8,
+						title:"审核管理",
+						icon:"el-icon-view",
+						list:[{
+							id:9,
+							title:"房源发布一级审核",
+							href:"zf-first.html",
+							icon:"el-icon-star-off"
+						},{
+							id:10,
+							title:"房源发布二级审核",
+							href:"zf-second.html",
+							icon:"el-icon-star-on"
+						},{
+							id:11,
+							title:"贷款订单一级审核",
+							href:"dk-first.html",
+							icon:"el-icon-star-off"
+						},{
+							id:12,
+							title:"贷款订单二级审核",
+							href:"dk-second.html",
+							icon:"el-icon-star-on"
+						}]
+					},{
+						id:13,
+						title:"贷款管理",
+						icon:"el-icon-rank",
+						list:[{
+							id:14,
+							title:"贷款订单",
+							href:"loan_detail.html",
+							icon:"el-icon-document"
+						},{
+							id:15,
+							title:"还款订单",
+							href:"repay_detail.html",
+							icon:"el-icon-document"
+						}]
+					},{
+						id:16,
+						title:"房源管理",
+						icon:"el-icon-document",
+						list:[{
+							id:17,
+							title:"房源信息",
+							href:"house_detail.html",
+							icon:"el-icon-document"
+						},{
+							id:18,
+							title:"租房订单",
+							href:"order_detail.html",
+							icon:"el-icon-document"
+						}]
+					},{
+						id:19,
+						title:"字典管理",
+						icon:"el-icon-tickets",
+						list:[{
+							id:20,
+							title:"字典信息",
+							href:"/toDictionaryPage",
+							icon:"el-icon-tickets"
+						}]
+					},{
+						id:21,
+						title:"日志管理",
+						icon:"el-icon-bell",
+						list:[{
+							id:22,
+							title:"日志信息",
+							href:"/toLogPage",
+							icon:"el-icon-bell"
+						} ]
+					}]*/
+				},
+				vif: true,
+				nickname: ""
+			},
+			mounted: function() {
+				var date = new Date();
+				this.now = (date.getMonth() + 1) + '-' + date.getDate() + "/" + date.getHours() + ':' + date.getMinutes()
+				this.menuTree();
+			},
+			methods: {
+				menuTree: function() {
+					var _this = this;
+					this.nickname = window.localStorage.getItem("username");
+					if(window.localStorage.getItem("id") != 0) {
+						$.post("/menus", function(menu) {
+							alert(menu.code);
+							//alert((menu.data)[0].id);
+							alert(JSON.stringify(menu.data));
+							_this.root = menu.data;
+
+						})
+					} else {
+						$.post("http://localhost:8080/WeatherManage/sidebar2", function(menu) {
+							_this.root = menu;
+
+						})
+					}
+				},
+				back: function() {
+					location.href = "logout"
+				}
+			}
+
+		})
+	</script>
+	<script src="/static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+	<!--<script type="text/javascript">
+		$(function() {
+			// 通过搜狐接口，查找当当前城市的ip地址
+			$("#ip").html(returnCitySN["cname"] + ' ' + returnCitySN["cip"]);
+			// 根据当前ip，显示当天城市天气
+			$.ajax({
+				async: false,
+				type: 'GET',
+				url: 'https://www.tianqiapi.com/api/',
+				data: 'version=v6&ip=' + returnCitySN["cip"],
+				dataType: 'JSON',
+				error: function() {
+					alert('网络错误');
+				},
+				success: function(res) {
+					$("#weather").html(res.wea + "----" + res.tem + "℃" + "<br>" +
+						res.air_level + ":" + res.air + "<br>" + res.air_tips);
+				}
+			});
+		})
+	</script>-->
+	<!--<script>
+		$(function() {
+			var scrollDiv = $(".scroll"),
+				$ul = scrollDiv.find("ul"),
+				$li = scrollDiv.find("li"),
+				$length = $li.length,
+				$liHeight = $li.height(),
+				num = 0;
+
+			if(scrollDiv.length == 0) {
+				return;
+			}
+
+			if($length > 1) {
+				$ul.append($li.eq(0).clone());
+				setInterval(
+					function() {
+						num++;
+						$ul.addClass("animate").css("-webkit-transform", "translateY(-" + $liHeight * (num) + "px)");
+						setTimeout(
+							function() {
+								if(num == $length) {
+									$ul.removeClass("animate").css("-webkit-transform", "translateY(0)");
+									num = 0;
+								}
+							}, 300);
+					}, 3000);
+			}
+			setInterval(function() {
+				$.ajax({
+					async: false,
+					type: 'GET',
+					url: 'http://localhost:8080/WeatherManage/scenery/list/1/2?status=3',
+					dataType: 'JSON',
+					success: function(res) {
+						if(res.content!=null){
+							$("#shijing").html("<b style='color:red'> 有"+res.totalElements+"个实景上传待处理!</b>");
+						}else{
+							$("#shijing").html("暂无实景上传!");
+						}
+					}
+				});
+				$.ajax({
+					async: false,
+					type: 'GET',
+					url: 'http://localhost:8080/WeatherManage/feedback/list//1/2?state=未处理',
+					dataType: 'JSON',
+					success: function(res) {
+						if(res.content!=null){
+							$("#fankui").html("<b style='color:red'> 有"+res.totalElements+"个用户反馈待处理!</b>");
+						}else{
+							$("#fankui").html("暂无用户反馈!");
+						}
+					}
+				});
+			}, 5000);
+		});
+	</script>-->
+
+</html>

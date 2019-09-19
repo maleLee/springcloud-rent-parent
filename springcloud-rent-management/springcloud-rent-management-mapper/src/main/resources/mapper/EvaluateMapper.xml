@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aaa.lee.rent.mapper.EvaluateMapper" >
+  <resultMap id="BaseResultMap" type="com.aaa.lee.rent.model.Evaluate" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="redundant" property="redundant" jdbcType="VARCHAR" />
+    <result column="rent_id" property="rentId" jdbcType="VARCHAR" />
+    <result column="evaluate_point" property="evaluatePoint" jdbcType="INTEGER" />
+    <result column="evaluate_time" property="evaluateTime" jdbcType="TIMESTAMP" />
+    <result column="evaluate_status" property="evaluateStatus" jdbcType="VARCHAR" />
+    <result column="text" property="text" jdbcType="LONGVARCHAR" />
+  </resultMap>
+</mapper>

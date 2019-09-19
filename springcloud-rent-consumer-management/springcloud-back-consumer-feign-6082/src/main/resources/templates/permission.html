@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="css/index.css">
+		<title>权限管理页面</title>
+	</head>
+
+	<body>
+		<div id="app">
+			<el-breadcrumb separator-class="el-icon-arrow-right" style="margin: 20px 0;">
+				<el-breadcrumb-item :to="{ path: '/' }">权限管理</el-breadcrumb-item>
+				<el-breadcrumb-item>权限信息</el-breadcrumb-item>
+			</el-breadcrumb>
+			<el-main>
+				<el-form :inline="true" class="demo-form-inline">
+					<el-form-item label="权限名">
+						<el-input placeholder="请输入权限" v-model="query.nickname" @keyup.enter.native="tableShow(1)"></el-input>
+					</el-form-item>
+					<el-form-item>
+						<el-button type="primary" @click="tableShow(1)">查询</el-button>
+						<el-button type="success" @click="add">新增</el-button>
+					</el-form-item>
+				</el-form>
+				<el-table :data="tableData" stripe style="width: 100%">
+					<el-table-column prop="id" label="id" >
+					</el-table-column>
+					<el-table-column prop="permissionName" label="权限英文名" >
+					</el-table-column>
+					<el-table-column prop="permissionChineseName" label="权限中文名">
+					</el-table-column>
+					<el-table-column prop="permissionType" label="权限类型">
+					</el-table-column>
+					<el-table-column prop="permissionDescrbe" label="权限描述">
+					</el-table-column>
+					<el-table-column prop="menuUrl" label="菜单路径">
+					</el-table-column>
+					<el-table-column prop="menuIcon" label="菜单图标编号">
+					</el-table-column>
+					<el-table-column prop="pid" label="父级节点">
+					</el-table-column>
+					<el-table-column prop="createTime" label="创建日期">
+					</el-table-column>
+					<el-table-column fixed="right" label="操作" width="200">
+						<template slot-scope="scope">
+							<el-button type="primary" @click="edit(scope.row)">修改</el-button>
+							<el-button type="danger" @click="remove(scope.row)" v-if="scope.row.adminType!=1">删除</el-button>
+						</template>
+					</el-table-column>
+				</el-table>
+				<div class="block">
+					<el-pagination @current-change="tableShow" :current-page="currentPage" :page-size="pagesize" layout="total, prev, pager, next, jumper" :total="total">
+					</el-pagination>
+				</div>
+				<el-dialog title="用户信息" :visible.sync="dialogFormVisible">
+					<el-form :model="form" :rules="rules" ref="form">
+						<input type="hidden" v-model="form.id" />
+						<el-form-item label="权限英文名" prop="permissionName" :label-width="formLabelWidth">
+							<el-input v-model="form.permissionName"></el-input>
+						</el-form-item>
+						<el-form-item label="权限中文名" prop="permissionChineseName" :label-width="formLabelWidth" v-if="false">
+							<el-input v-model="form.permissionChineseName"></el-input>
+						</el-form-item>
+						<el-form-item label="权限类型" prop="permissionType" :label-width="formLabelWidth">
+							<el-input v-model="form.permissionType"></el-input>
+						</el-form-item>
+						<el-form-item label="权限描述" prop="permissionDescrbe" :label-width="formLabelWidth">
+							<el-input v-model="form.permissionDescrbe"></el-input>
+						</el-form-item>
+						<el-form-item label="菜单路径" prop="menuUrl" :label-width="formLabelWidth">
+							<el-input v-model="form.menuUrl"></el-input>
+						</el-form-item>
+						<el-form-item label="菜单图标编号" prop="menuIcon" :label-width="formLabelWidth">
+							<el-input v-model="form.menuIcon"></el-input>
+						</el-form-item>
+						<el-form-item label="父级节点" prop="pid" :label-width="formLabelWidth">
+							<el-input v-model="form.pid"></el-input>
+						</el-form-item>
+						<el-form-item label="创建时间" prop="createtime" :label-width="formLabelWidth">
+							<el-date-picker type="date" placeholder="选择日期" value-format="yyyy-MM-dd" v-model="form.createtime">
+							</el-date-picker>
+						</el-form-item>
+					</el-form>
+					<div slot="footer" class="dialog-footer">
+						<el-button @click="cancel">取 消</el-button>
+						<el-button type="primary" @click="save">确 定</el-button>
+					</div>
+				</el-dialog>
+			</el-main>
+		</div>
+
+	</body>
+	<!-- 先引入 Vue -->
+	<script src="js/vue.js"></script>
+	<!-- 引入组件库 -->
+	<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<!-- 引入组件库 -->
+	<script src="js/index.js"></script>
+	<script src="js/global.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		var app = new Vue({
+			el: "#app",
+			data: {
+				formLabelWidth: "120px",
+				dialogFormVisible: false,
+				tableData: [{
+					id:1,
+					permissionName:"user_manager",
+					permissionChineseName:"用户信息管理",
+					permissionType:"管理员权限",
+					permissionDescrbe:"用于管理用户信息",
+					menuUrl:"user/manager",
+					menuIcon:"el-icon-news",
+					pid:"0",
+					createTime:"2019-09-05"
+				},{
+					id:1,
+					permissionName:"permission_manager",
+					permissionChineseName:"权限信息管理",
+					permissionType:"管理员权限",
+					permissionDescrbe:"用于管理权限信息",
+					menuUrl:"permission/manager",
+					menuIcon:"el-icon-news",
+					pid:"0",
+					createTime:"2019-09-05"
+				},{
+					id:1,
+					permissionName:"log_manager",
+					permissionChineseName:"日志信息管理",
+					permissionType:"管理员权限",
+					permissionDescrbe:"用于管理日志信息",
+					menuUrl:"log/manager",
+					menuIcon:"el-icon-news",
+					pid:"0",
+					createTime:"2019-09-05"
+				},{
+					id:1,
+					permissionName:"agent_center",
+					permissionChineseName:"经纪人个人中心",
+					permissionType:"经纪人",
+					permissionDescrbe:"用于经纪人管理自己的信息",
+					menuUrl:"agent/center",
+					menuIcon:"el-icon-news",
+					pid:"0",
+					createTime:"2019-09-05"
+				}],
+				form: {},
+				currentPage: 1,
+				total: 0,
+				pagesize: 3,
+				query: {},
+				rules: {
+					username: [{
+						required: true,
+						message: '请输入用户名',
+						trigger: 'blur'
+					}],
+					password: [{
+						required: true,
+						message: '请输入密码',
+						trigger: 'blur'
+					}],
+					nickname: [{
+						required: true,
+						message: '请输入昵称',
+						trigger: 'blur'
+					}],
+					phone: [{
+						required: true,
+						message: '请输入手机号',
+						trigger: 'blur'
+					}, {
+						validator: function(rule, value, callback) {
+							if(!value) {
+								return callback(new Error('手机号不能为空'));
+							} else {
+								const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
+								if(reg.test(value)) {
+									callback();
+								} else {
+									return callback(new Error('请输入正确的手机号'));
+								}
+							}
+						},
+						trigger: 'blur'
+					}],
+					idcard: [{
+						required: true,
+						message: '请输入身份证号',
+						trigger: 'blur'
+					}, {
+						validator: function(rule, value, callback) {
+							if(!value) {
+								return callback(new Error('身份证号不能为空'));
+							} else {
+								const reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
+								if(reg.test(value)) {
+									callback();
+								} else {
+									return callback(new Error('请输入正确的身份证号码'));
+								}
+							}
+						},
+						trigger: 'blur'
+					}],
+					createtime: [{
+						required: true,
+						message: '请输入创建时间',
+						trigger: 'blur'
+					}]
+				}
+			},
+			mounted: function() { //在这里实现onload事件
+				this.tableShow(1);
+
+			},
+			methods: {
+				formatType: function(row, column) {
+					return row.adminType == '1' ? "超级管理员" : "后台管理员";
+				},
+				formatPassword: function(row, column) {
+					return "******";
+				},
+				tableShow: function(currentpage) {
+					//做异步请求的函数
+					var _this = this;
+					$.post(server.domain + "admin/list/" + currentpage + "/" + this.pagesize, this.query, function(page) {
+						_this.tableData = page.content;
+						_this.total = page.totalElements;
+					})
+				},
+				add: function() {
+					this.dialogFormVisible = true;
+					this.form = {};
+				},
+				save: function() {
+					var _this = this;
+					this.$refs["form"].validate(function(valid) {
+						if(valid) {
+							_this.dialogFormVisible = false;
+							$.post("http://localhost:8080/WeatherManage/admin/save", _this.form, function(data) {
+								_this.$notify({
+									title: '成功',
+									message: data.message,
+									type: 'success'
+								});
+							})
+							setTimeout(function() {
+								location.reload()
+							}, 1000);
+						} else {
+							console.log('error submit!!');
+							return false;
+						}
+					});
+
+				},
+				cancel: function() {
+					this.dialogFormVisible = false;
+					this.tableShow(1);
+				},
+				edit: function(row) {
+					this.dialogFormVisible = true;
+					this.form = row;
+				},
+				remove: function(row) {
+					var _this = this;
+					this.$confirm('此操作将永久删除该条数据, 是否继续?', '提示', {
+						confirmButtonText: '确定',
+						cancelButtonText: '取消',
+						type: 'warning'
+					}).then(function() {
+						$.post("http://localhost:8080/WeatherManage/admin/remove/" + row.id, function(data) {
+							_this.$notify({
+								title: '成功',
+								message: data.message,
+								type: 'success'
+							});
+						})
+						setTimeout(function() {
+							location.reload()
+						}, 1000);
+					}).catch(function() {
+						this.$message({
+							type: 'info',
+							message: '已取消删除'
+						});
+					});
+				}
+			}
+		})
+	</script>
+
+</html>

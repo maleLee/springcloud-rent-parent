@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="css/index.css">
+		<title>审核管理</title>
+	</head>
+
+	<body>
+		<div id="app">
+			<el-breadcrumb separator-class="el-icon-arrow-right" style="margin: 20px 0;">
+				<el-breadcrumb-item :to="{ path: '/' }">审核管理</el-breadcrumb-item>
+				<el-breadcrumb-item>房源发布一级审核</el-breadcrumb-item>
+			</el-breadcrumb>
+			<el-main>
+				<el-table :data="tableData" stripe style="width: 100%">
+					<el-table-column prop="id" label="房源id" >
+					</el-table-column>
+					<el-table-column prop="userId" label="发布者id" >
+					</el-table-column>
+					<el-table-column prop="userType" label="发布者类型" >
+					</el-table-column>
+					<el-table-column prop="title" label="信息标题">
+					</el-table-column>
+					<el-table-column prop="pay" label="月租金" >
+					</el-table-column>
+					<el-table-column prop="chargeStrategy" label="押付类型" >
+					</el-table-column>
+					<el-table-column prop="trapeze" label="经纬度" >
+					</el-table-column>
+					<el-table-column prop="area" label="所在地区" >
+					</el-table-column>
+					<el-table-column prop="community" label="小区名称" >
+					</el-table-column>
+					<el-table-column prop="floor" label="楼层" >
+					</el-table-column>
+					<el-table-column prop="houseSize" label="房屋面积" >
+					</el-table-column>
+					<el-table-column prop="houseType" label="户型" >
+					</el-table-column>
+					<el-table-column prop="orientation" label="朝向" >
+					</el-table-column>
+					<el-table-column prop="createTime" label="申请日期">
+					</el-table-column>
+					<el-table-column prop="status" label="发布状态">
+					</el-table-column>
+					<el-table-column fixed="right" label="操作" width="200">
+						<template slot-scope="scope">
+							<el-button type="primary" @click="look(scope.row)">查看详情</el-button>
+						</template>
+					</el-table-column>
+				</el-table>
+				<div class="block">
+					<el-pagination @current-change="tableShow" :current-page="currentPage" :page-size="pagesize" layout="total, prev, pager, next, jumper" :total="total">
+					</el-pagination>
+				</div>
+				<el-dialog title="房源信息" :visible.sync="dialogFormVisible">
+					<el-form :model="form" :rules="rules" ref="form">
+						<input type="hidden" v-model="form.rentid" />
+						<el-form-item label="房源类型" prop="rentType" :label-width="formLabelWidth">
+							<el-input v-model="form.rentType" :disabled="true"></el-input>
+						</el-form-item>
+						<el-form-item label="房源地址" prop="rentAddress" :label-width="formLabelWidth">
+							<el-input v-model="form.rentAddress" :disabled="true"></el-input>
+						</el-form-item>
+						<el-form-item label="房屋设施" prop="roomFacilities" :label-width="formLabelWidth">
+							<el-input v-model="form.roomFacilities" :disabled="true"></el-input>
+						</el-form-item>
+						<el-form-item label="房间照片" :label-width="formLabelWidth">
+								<img width="30%" :src="realPicture1" alt=""/>&nbsp;&nbsp;
+								<img width="30%" :src="realPicture2" alt=""/>
+							<!--<el-input type="hidden" v-model="form.logo"></el-input>-->
+						</el-form-item>
+						<el-form-item label="房产证照片" :label-width="formLabelWidth">
+								<img width="30%" :src="housePropertyCertification" alt=""/>
+							<!--<el-input type="hidden" v-model="form.logo"></el-input>-->
+						</el-form-item>
+						<el-form-item label="房屋描述" prop="houseDescription" :label-width="formLabelWidth">
+							<el-input v-model="form.houseDescription" :disabled="true"></el-input>
+						</el-form-item>
+						<el-form-item label="标签" prop="tag" :label-width="formLabelWidth">
+							<el-input v-model="form.tag1" :disabled="true" style="width: 200px;"></el-input>
+							<el-input v-model="form.tag2" :disabled="true" style="width: 200px;"></el-input>
+							<el-input v-model="form.tag3" :disabled="true" style="width: 200px;"></el-input>
+						</el-form-item>
+					</el-form>
+					<div slot="footer" class="dialog-footer">
+						<el-button @click="shutdown(loanId)">不通过</el-button>
+						<el-button type="primary" @click="goOn(loanId)">通过</el-button>
+					</div>
+				</el-dialog>
+			</el-main>
+		</div>
+
+	</body>
+	<!-- 先引入 Vue -->
+	<script src="js/vue.js"></script>
+	<!-- 引入组件库 -->
+	<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<!-- 引入组件库 -->
+	<script src="js/index.js"></script>
+	<script src="js/global.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		var app = new Vue({
+			el: "#app",
+			data: {
+				formLabelWidth: "120px",
+				dialogFormVisible: false,
+				realPicture1:"img/fang1.jpg",
+				realPicture2:"img/fang2.jpg",
+				housePropertyCertification:"img/fang3.jpg",
+				tableData: [{
+					id:1,
+					userId:1,
+					userType:"房东",
+					title:"干净整洁，快来租呀",
+					pay:"2000",
+					chargeStrategy:"押一付三",
+					trapeze:"113.35,35.68",
+					area:"金水区",
+					community:"金华小区",
+					floor:"13",
+					houseSize:"120平米",
+					houseType:"三室一厅",
+					orientation:"南",
+					status:"未审核",
+					createTime:"2019-09-05"
+				},{
+					id:2,
+					userId:2,
+					userType:"经纪人",
+					title:"最新房子，包你满意",
+					pay:"3000",
+					chargeStrategy:"押一付三",
+					trapeze:"113.35,35.68",
+					area:"惠济区",
+					community:"华南小区",
+					floor:"3",
+					houseSize:"90平米",
+					houseType:"三室一厅",
+					orientation:"北",
+					status:"未审核",
+					createTime:"2019-09-05"
+				},{
+					id:3,
+					userId:3,
+					userType:"房东",
+					title:"来看看啊，好房子",
+					pay:"1500",
+					chargeStrategy:"押一付三",
+					trapeze:"113.35,35.68",
+					area:"正东新区",
+					community:"中央特区",
+					floor:"10",
+					houseSize:"170平米",
+					houseType:"三室一厅",
+					orientation:"南",
+					status:"未审核",
+					createTime:"2019-09-05"
+				},{
+					id:4,
+					userId:4,
+					userType:"经纪人",
+					title:"gogogo！！！",
+					pay:"3100",
+					chargeStrategy:"押一付三",
+					trapeze:"113.35,35.68",
+					area:"管城区",
+					community:"政商新蓝钻小区",
+					floor:"3",
+					houseSize:"160平米",
+					houseType:"三室一厅",
+					orientation:"南",
+					status:"未审核",
+					createTime:"2019-09-05"
+				}],
+				form: {},
+				currentPage: 1,
+				total: 0,
+				pagesize: 3,
+				query: {},
+				rules: {
+					username: [{
+						required: true,
+						message: '请输入用户名',
+						trigger: 'blur'
+					}],
+					password: [{
+						required: true,
+						message: '请输入密码',
+						trigger: 'blur'
+					}],
+					nickname: [{
+						required: true,
+						message: '请输入昵称',
+						trigger: 'blur'
+					}],
+					phone: [{
+						required: true,
+						message: '请输入手机号',
+						trigger: 'blur'
+					}, {
+						validator: function(rule, value, callback) {
+							if(!value) {
+								return callback(new Error('手机号不能为空'));
+							} else {
+								const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
+								if(reg.test(value)) {
+									callback();
+								} else {
+									return callback(new Error('请输入正确的手机号'));
+								}
+							}
+						},
+						trigger: 'blur'
+					}],
+					idcard: [{
+						required: true,
+						message: '请输入身份证号',
+						trigger: 'blur'
+					}, {
+						validator: function(rule, value, callback) {
+							if(!value) {
+								return callback(new Error('身份证号不能为空'));
+							} else {
+								const reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
+								if(reg.test(value)) {
+									callback();
+								} else {
+									return callback(new Error('请输入正确的身份证号码'));
+								}
+							}
+						},
+						trigger: 'blur'
+					}],
+					createtime: [{
+						required: true,
+						message: '请输入创建时间',
+						trigger: 'blur'
+					}]
+				}
+			},
+			mounted: function() { //在这里实现onload事件
+				this.tableShow(1);
+
+			},
+			methods: {
+//				formatType: function(row, column) {
+//					return row.adminType == '1' ? "超级管理员" : "后台管理员";
+//				},
+//				formatPassword: function(row, column) {
+//					return "******";
+//				},
+				tableShow: function(currentpage) {
+					//做异步请求的函数
+					var _this = this;
+					$.post(server.domain + "admin/list/" + currentpage + "/" + this.pagesize, this.query, function(page) {
+						_this.tableData = page.content;
+						_this.total = page.totalElements;
+					})
+				},
+				look: function() {
+					this.dialogFormVisible = true;
+					this.form = {
+						rentType:"学区房",
+					rentAddress:"杨金路牛顿国际A座",
+					roomFacilities:"卫生间，厨房",
+					houseDescription:"房间特别棒",
+					tag1:"独立卫生间",
+					tag2:"交通便利",
+					tag3:"领包入住",
+					};
+				},
+				shutdown: function(loanId) {
+					this.dialogFormVisible = false;
+				},
+				goOn:function(loanId){
+					this.dialogFormVisible = false;
+				}
+			}
+		})
+	</script>
+
+</html>

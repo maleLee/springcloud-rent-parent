@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="/static/css/index.css">
+	</head>
+
+	<body>
+		<div id="app">
+			<el-breadcrumb separator-class="el-icon-arrow-right" style="margin: 20px 0;">
+				<el-breadcrumb-item :to="{ path: '/' }">房源管理</el-breadcrumb-item>
+				<el-breadcrumb-item>房源详情</el-breadcrumb-item>
+			</el-breadcrumb>
+			<el-main>
+				<el-form :inline="true" class="demo-form-inline">
+					<el-form-item label="操作类型：">
+						<el-input placeholder="请输入信息" v-model="query.nickname" @keyup.enter.native="tableShow(1)"></el-input>
+					</el-form-item>
+					<el-form-item>
+						<el-button type="primary" @click="tableShow(1)">查询</el-button>
+					</el-form-item>
+				</el-form>
+				<el-table :data="tableData" stripe style="width: 100%">
+					<el-table-column prop="id" label="编号" width="180">
+					</el-table-column>
+					<el-table-column prop="userId" label="用户编号" width="180">
+					</el-table-column>
+					<el-table-column prop="ip" label="用户IP地址">
+					</el-table-column>
+					<el-table-column prop="operationalContent" label="操作内容">
+					</el-table-column>
+					<el-table-column prop="operationalType" label="操作类型">
+					</el-table-column>
+					<el-table-column prop="operationalTarget" label="操作目标">
+					</el-table-column>
+					<el-table-column prop="createTime" label="操作时间">
+					</el-table-column>
+				</el-table>
+				<div class="block">
+					<el-pagination @current-change="tableShow" :current-page="currentPage" :page-size="pagesize" layout="total, prev, pager, next, jumper" :total="total">
+					</el-pagination>
+				</div>
+			</el-main>
+		</div>
+
+	</body>
+	<!-- 先引入 Vue -->
+	<script src="/static/js/vue.js" type="text/javascript"></script>
+	<!-- 引入组件库 -->
+	<script src="/static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<!-- 引入组件库 -->
+	<script src="/static/js/index.js" type="text/javascript"></script>
+	<script src="/static/js/global.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var app = new Vue({
+			el: "#app",
+			data: {
+				formLabelWidth: "120px",
+				dialogFormVisible: false,
+				tableData: [{
+					id:1,
+					userId:1,
+					ip:"192.168.1.25",
+					operationalContent:"更新了一条房源详情记录",
+					operationalType:"更新",
+					operationalTarget:"房源详情",
+					createTime:"2019-09-05 16:47:50",
+				},{
+						id:2,
+					userId:2,
+					ip:"192.168.1.25",
+					operationalContent:"更新了一条房源详情记录",
+					operationalType:"更新",
+					operationalTarget:"房源详情",
+					createTime:"2019-09-05 16:47:50",
+				},{
+						id:3,
+					userId:3,
+					ip:"192.168.1.25",
+					operationalContent:"更新了一条房源详情记录",
+					operationalType:"更新",
+					operationalTarget:"房源详情",
+					createTime:"2019-09-05 16:47:50",
+				},{
+						id:4,
+					userId:1,
+					ip:"192.168.1.25",
+					operationalContent:"更新了一条房源详情记录",
+					operationalType:"更新",
+					operationalTarget:"房源详情",
+					createTime:"2019-09-05 16:47:50",
+				},{
+						id:5,
+					userId:1,
+					ip:"192.168.1.25",
+					operationalContent:"更新了一条房源详情记录",
+					operationalType:"更新",
+					operationalTarget:"房源详情",
+					createTime:"2019-09-05 16:47:50",
+				}],
+				currentPage: 1,
+				total: 0,
+				pagesize: 3,
+				query: {}
+			},
+			mounted: function() { //在这里实现onload事件
+				this.tableShow(1);
+
+			},
+			methods: {
+				tableShow: function(currentpage) {
+					//做异步请求的函数
+					// /allDictionary?currentPage="+currentpage+"&pageSize="+this.pagesize
+					/*var _this = this;
+					$.post(server.domain + "admin/list/" + currentpage + "/" + this.pagesize, this.query, function(page) {
+						_this.tableData = page.content;
+						_this.total = page.totalElements;
+					});*/
+					var _this = this;
+					$.post("/allLogs?currentPage="+currentpage+"&pageSize="+this.pagesize, this.query, function(page) {
+						alert(page.code);
+						alert(page.msg);
+						_this.tableData = page.content;
+						_this.total = page.totalElements;
+					})
+				}
+			}
+		})
+	</script>
+
+</html>

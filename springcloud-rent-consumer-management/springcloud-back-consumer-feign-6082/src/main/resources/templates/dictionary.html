@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="/static/css/index.css">
+	</head>
+
+	<body>
+		<div id="app">
+			<el-breadcrumb separator-class="el-icon-arrow-right" style="margin: 20px 0;">
+				<el-breadcrumb-item :to="{ path: '/' }">系统管理</el-breadcrumb-item>
+				<el-breadcrumb-item>字典管理</el-breadcrumb-item>
+			</el-breadcrumb>
+			<el-main>
+				<el-form :inline="true" class="demo-form-inline">
+					<el-form-item label="条件查询">
+						<el-select v-model="query.status" placeholder="请选择条件进行查询">
+							<el-option label="字典类型" value="1"></el-option>
+							<el-option label="字典名称" value="2"></el-option>
+							<el-option label="父级编号" value="3"></el-option>
+						</el-select>
+					</el-form-item>
+					<el-form-item>
+						<el-input placeholder="请输入内容" v-model="query.nickname" @keyup.enter.native="tableShow(1)"></el-input>
+					</el-form-item>
+					<el-form-item>
+						<el-button type="primary" @click="tableShow(1)">查询</el-button>
+						<el-button type="success" @click="add">新增</el-button>
+					</el-form-item>
+				</el-form>
+				<el-table :data="tableData" stripe style="width: 100%">
+					<el-table-column prop="id" label="编号" width="180" v-if="false">
+					</el-table-column>
+					<el-table-column prop="dictCode" label="字典编号">
+					</el-table-column>
+					<el-table-column prop="dictName" label="字典名称">
+					</el-table-column>
+					<el-table-column prop="dictTypeCode" label="字典类型编号">
+					</el-table-column>
+					<el-table-column prop="dictTypeName" label="字典类型">
+					</el-table-column>
+					<el-table-column prop="pid" label="父级编号">
+					</el-table-column>
+					<el-table-column prop="createTime" label="创建时间">
+					</el-table-column>
+					<el-table-column prop="updateTime" label="修改时间">
+					</el-table-column>
+					<el-table-column fixed="right" label="操作" width="200">
+						<template slot-scope="scope">
+							<el-button type="primary" @click="edit(scope.row)">修改</el-button>
+							<el-button type="danger" @click="remove(scope.row)" v-if="scope.row.adminType!=1">删除</el-button>
+						</template>
+					</el-table-column>
+				</el-table>
+				<div class="block">
+					<el-pagination @current-change="tableShow" :current-page="currentPage" :page-size="pagesize" layout="total, prev, pager, next, jumper" :total="total">
+					</el-pagination>
+				</div>
+				<el-dialog title="字典信息" :visible.sync="dialogFormVisible">
+					<el-form :model="form" :rules="rules" ref="form">
+						<input type="hidden" v-model="form.id" />
+						<input type="hidden" v-model="form.createTime"/>
+						<el-form-item label="字典编号" prop="dictCode" :label-width="formLabelWidth">
+							<el-input v-model="form.dictCode"></el-input>
+						</el-form-item>
+						<el-form-item label="字典名称" prop="dictName" :label-width="formLabelWidth">
+							<el-input v-model="form.dictName"></el-input>
+						</el-form-item>
+						<el-form-item label="字典类型编号" prop="dictTypeCode" :label-width="formLabelWidth">
+							<el-input v-model="form.dictTypeCode"></el-input>
+						</el-form-item>
+						<el-form-item label="字典类型" prop="dictTypeName" :label-width="formLabelWidth">
+							<el-input v-model="form.dictTypeName"></el-input>
+						</el-form-item>
+						<el-form-item label="上级字典类型" prop="pid" :label-width="formLabelWidth">
+							<el-input v-model="form.pid"></el-input>
+						</el-form-item>
+						<!--<el-form-item label="上级字典类型" prop="pid" :label-width="formLabelWidth">
+							<el-select v-model="form.pid" placeholder="请选择上级菜单类型">
+								<el-option
+										v-for="item in selectList"
+										:key="item.id"
+										:label="item.name"
+										:value="item.id"
+								></el-option>
+							</el-select>
+						</el-form-item>-->
+					</el-form>
+					<div slot="footer" class="dialog-footer">
+						<el-button @click="cancel">取 消</el-button>
+						<el-button type="primary" @click="save">确 定</el-button>
+					</div>
+				</el-dialog>
+			</el-main>
+		</div>
+
+	</body>
+	<!-- 先引入 Vue -->
+	<script type="text/javascript" src="/static/js/vue.js"></script>
+	<!-- 引入组件库 -->
+	<script src="/static/js/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<!-- 引入组件库 -->
+	<script type="text/javascript" src="/static/js/index.js"></script>
+	<script src="/static/js/global.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		var app = new Vue({
+			el: "#app",
+			data: {
+				formLabelWidth: "120px",
+				dialogFormVisible: false,
+				tableData: [],
+				form: {},
+				currentPage: 1,
+				total: 0,
+				pagesize: 5,
+				query: {},
+				rules: {
+					dictTypeCode: [{
+						required: true,
+						message: '请输入字典类型编号',
+						trigger: 'blur'
+					}],
+					dictTypeName: [{
+						required: true,
+						message: '请输入字典类型',
+						trigger: 'blur'
+					}],
+					pid: [{
+						required: true,
+						message: '请输入父级编号',
+						trigger: 'blur'
+					}],
+					dictCode: [{
+						required: true,
+						message: '请输入字典编号',
+						trigger: 'blur'
+					}],
+					dictName: [{
+						required: true,
+						message: '请输入字典名称',
+						trigger: 'blur'
+					}]
+				}
+			},
+			mounted: function() { //在这里实现onload事件
+				this.tableShow(1);
+			},
+			methods: {
+				tableShow: function(currentpage) {
+					//做异步请求的函数
+					var _this = this;
+					/*$.post(server.domain + "admin/list/" + currentpage + "/" + this.pagesize, this.query, function(page) {
+						_this.tableData = page.content;
+						_this.total = page.totalElements;
+					});*/
+					$.post("/allDictionary?currentPage="+currentpage+"&pageSize="+this.pagesize, this.query, function(data) {
+						var pageInfo = data.data;
+						_this.tableData = pageInfo.list;
+						_this.total = pageInfo.total;
+					})
+				},
+				add: function() {
+					this.dialogFormVisible = true;
+					this.form = {};
+				},
+				save: function() {
+					var _this = this;
+					this.$refs["form"].validate(function(valid) {
+						if(valid) {
+							_this.dialogFormVisible = false;
+							$.post("/saveDictionary?dict=", _this.form, function(data) {
+								alert(data.code);
+								alert(data.msg);
+								_this.$notify({
+									title: '成功',
+									message: data.message,
+									type: 'success'
+								});
+							})
+							setTimeout(function() {
+								location.reload()
+							}, 1000);
+						} else {
+							console.log('error submit!!');
+							return false;
+						}
+					});
+
+				},
+				cancel: function() {
+					this.dialogFormVisible = false;
+					this.tableShow(1);
+				},
+				edit: function(row) {
+					this.dialogFormVisible = true;
+					this.form = row;
+				},
+				remove: function(row) {
+					var _this = this;
+					this.$confirm('此操作将永久删除该条数据, 是否继续?', '提示', {
+						confirmButtonText: '确定',
+						cancelButtonText: '取消',
+						type: 'warning'
+					}).then(function() {
+						// row:就是当前行的数据信息(id, dictName...)
+						$.post("/deleteDictionary?id=" + row.id, function(data) {
+							_this.$notify({
+								title: '成功',
+								message: data.message,
+								type: 'success'
+							});
+						})
+						setTimeout(function() {
+							location.reload()
+						}, 1000);
+					}).catch(function() {
+						this.$message({
+							type: 'info',
+							message: '已取消删除'
+						});
+					});
+				}
+			}
+		});
+	</script>
+
+</html>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.aaa.lee.rent.mapper.RentDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.aaa.lee.rent.model.RentDetail" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="rent_id" property="rentId" jdbcType="VARCHAR" />
+    <result column="rent_type" property="rentType" jdbcType="VARCHAR" />
+    <result column="rent_address" property="rentAddress" jdbcType="VARCHAR" />
+    <result column="room_facilities" property="roomFacilities" jdbcType="VARCHAR" />
+    <result column="real_picture" property="realPicture" jdbcType="VARCHAR" />
+    <result column="house_property_certification" property="housePropertyCertification" jdbcType="VARCHAR" />
+    <result column="house_description" property="houseDescription" jdbcType="VARCHAR" />
+    <result column="redundant" property="redundant" jdbcType="VARCHAR" />
+  </resultMap>
+</mapper>
