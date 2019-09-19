@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/index.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/echarts.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<style>
+		#main{
+			float:left;
+		}
+		#main2{
+			float:left;
+		}
+	</style>
+	<body>
+		    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+		    <div id="main" style="width: 600px;height:400px;"></div>
+			<div id="main2" style="width: 600px;height:400px;"></div>
+		    <script type="text/javascript">
+		        // 基于准备好的dom，初始化echarts实例
+		        var myChart = echarts.init(document.getElementById('main'));
+				var myChart2 = echarts.init(document.getElementById('main2'));
+		        // 指定图表的配置项和数据
+		        var option = {
+		            title: {
+		                text: '区域销售情况'
+		            },
+		            tooltip: {},
+		            legend: {
+		                data:['销量']
+		            },
+		            xAxis: {
+		                data: ["金水区","中原区","惠济区","二七区","高新区","管城区"]
+		            },
+		            yAxis: {},
+		            series: [{
+		                name: '销量',
+		                type: 'bar',
+		                data: [5, 20, 36, 10, 10, 20]
+		            }]
+		        };
+				var option2={
+					series : [
+					    {
+					        name: '访问来源',
+					        type: 'pie',
+					        radius: '55%',
+					        data:[
+					            {value:235, name:'金水区'},
+					            {value:274, name:'二七区'},
+					            {value:310, name:'中原区'},
+					            {value:335, name:'惠济区'},
+					            {value:400, name:'高新区'}
+					        ]
+					    }
+					]
+				}
+		        // 使用刚指定的配置项和数据显示图表。
+		        myChart.setOption(option);
+				myChart2.setOption(option2);
+		    </script>
+	</body>
+</html>

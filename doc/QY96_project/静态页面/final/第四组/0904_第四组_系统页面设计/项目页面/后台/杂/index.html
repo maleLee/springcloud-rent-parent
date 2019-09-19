@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<!--
+	欢迎体验HBuilder，最快的web编码工具。
+	烈马是需要驯服的，玩不转HBuilder，你快不了。
+	按照lessson1.txt的指导敲击键盘，你会发现HBuilder的神奇所在。
+	你可以用任何其他工具敲这段代码，至少比HBuilder慢5倍!
+	写几十行代码，来一场无鼠标编程之旅，看看who is e。
+	Are you ready?
+	小贴士：可以把lesson1.txt拖到右边或下边，实现分窗格并排浏览。
+	在注释后的第12行开始敲下lesson1里的按键。
+-->
+
+
+
+
+
+
+
+<!--
+这里是最终敲完的正确代码，可用于比对
+<html>
+	<head>
+		<title></title>
+		<meta charset="UTF-8"/>
+		<script src="test.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			function WhoisE () {
+				var e;
+				e = document.getElementsByClassName("classA");
+				e = document.getElementsByTagName("div");
+				e = document.getElementById("d1");
+				e.setAttribute("align","center");
+				e.setAttribute("data-test","2");
+				e.style.fontFamily="微软雅黑";
+				e.style.backgroundImage="url(img/HBuilder.png)";
+				e.style.cssText="background-image: url(img/HBuilder.png);";
+				switch (e.style.display){
+					case "-webkit-box":
+						break;
+					default:
+						break;
+				}
+				if (e.getAttribute("class")!="classA") {
+					e.className="classA";
+				}
+				e.innerHTML="<font color='#CCCCCC'></font>";
+				e = document.getElementById("a1");
+				e.href="#a1";
+				e.target="_blank";
+				e = new Image();
+				e.src="img/HBuilder.png";
+				e = window.indexedDB || window.webkitIndexedDB || window.msIndexedDB || window.mozIndexedDB;
+				if (typeof(e)!="undefined") {
+					e.open("test");
+				}
+				var head = document.getElementsByTagName("head")[0];
+				with (head){
+					var l = lastElementChild;
+					removeChild(l);
+				}
+				e = document.createElement("link");
+				e.rel="stylesheet";
+				e.type="text/css";
+				e.href="test.css";
+				head.appendChild(e);
+				var ss="e is ";
+				if (e.getAttribute("data-test")==null) {
+					ss=ss+e.outerHTML;
+				} else{
+					ss=ss+"unknow";
+				}
+				alert(ss)
+			}
+			addEventListener("DOMContentLoaded",function () {
+				finishLesson(1)
+			})
+		</script>
+		<style type="text/css">
+			body{
+				text-align: center;
+				-webkit-user-select: none;
+			}
+			input[type=button]{
+				width: 90px;
+			}
+			ul{display: none}
+			#d1{
+				font-family: "微软雅黑";
+				background-image: url(img/HBuilder.png)
+			}
+		</style>
+		<link rel="stylesheet" type="text/css" href="test.css"/>
+	</head>
+	<body>
+		<img src="img/HBuilder.png"/>
+		<br />
+		<div id="d1" class="classA" data-test = "1"></div>
+		<a href="#a1" id="a1"></a>
+		<ul>
+			<li></li>
+		</ul>
+		<nav>&nbsp;</nav>
+		<input type="button" name="" id="" value="who is e" onclick="WhoisE()" />
+	</body>
+</html>
+-->

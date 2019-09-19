@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+
+	<body>
+		<div id="" class="">
+			你想说点啥：<br/>
+			<textarea id="msg"></textarea>
+			<button id="issue" onclick="f1()">广播</button>
+			<div id="content"></div>
+		</div>
+	</body>
+	<script>
+		var a = document.getElementById("msg");
+		var b =document.getElementById("content");
+		function f1() {
+			var d =document.createElement("div");
+			d.innerHTML=a.value;
+			b.appendChild(d);
+		}
+	</script>
+
+</html>

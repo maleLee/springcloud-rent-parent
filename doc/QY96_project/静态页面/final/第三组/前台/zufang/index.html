@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="css/index.css">
+		<title></title>
+		<style type="text/css">
+			#title {
+				text-align: center;
+				font-family: "黑体";
+				font-size: 15px;
+				color: white;
+				background-color: #99CCFF;
+				padding-top: 20px;
+				padding-bottom: 20px;
+			}
+			
+			.eh {
+				background-color: #FFFFFF;
+			}
+			
+			.em {
+				background-color: #F56C6C;
+			}
+			
+			.hezi {
+				background-color: #FFF;
+				width: 80%;
+				text-align: center;
+				border:solid;
+				border-style: outset;
+				border-bottom: hidden;
+			}
+			.hezir {
+				background-color: #FFF;
+				width: 40%;
+				float:left;
+				text-align: left;
+				margin-left: 20px;
+			}
+			.hezil {
+				background-color: #FFF;
+				width: 15%;
+				float:left;
+				
+			}
+			.jiao {
+				background-color: #FFF;
+				color: black;
+				text-align: center;
+				width: 80.4%;
+				height: 180px;
+				border:solid;
+				border-style: outset;
+				border-bottom: hidden;
+				border-top: hidden;
+			}
+		</style>
+	</head>
+
+	<body>
+		<el-container id="app">
+
+			<el-header class="eh" style="height: 110px;">
+				<el-menu :default-active="activeIndex2" class="el-menu-demo" mode="horizontal" background-color="#6699CC" text-color="#fff" active-text-color="#ffd04b">
+					<el-submenu index="goods1.html">
+						<template slot="title" ><a href="sort2.html" style="text-decoration: none; color: white;">苏州</a></template>
+						<el-aside width="200px">
+							<el-menu default-active="2" menu-trigger="click" class="el-menu-demo" mode="horizontal" background-color="#6699CC" text-color="#fff" active-text-color="#ffd04b">
+								<el-submenu v-for="(a,idx1) in city" :index="a.snackid">
+									<template slot="title">
+										<i :class="a.icon"></i>
+										<span>{{a.name}}</span>
+									</template>
+									<!--<el-menu-item-group>
+
+										<el-menu-item v-for="(m2,idx2) in a.list" :index="m2.snackid">
+											<a :href="m2.url" style="text-decoration: none; color: #000000;" ><i :class="m2.icon"></i><span>{{m2.title}}</span></a>
+										</el-menu-item>
+									</el-menu-item-group>-->
+
+								</el-submenu>
+
+							</el-menu>
+						</el-aside>
+					</el-submenu>
+					<el-menu-item index="index.html"><a href="index.html" style="text-decoration: none;">首页</a></el-menu-item>
+
+					<el-menu-item index="index1.html">
+						<a href="sort7.html" style="text-decoration: none;">地图找房</a>
+					</el-menu-item>
+					<el-menu-item index="remai.html">
+						我要出租
+					</el-menu-item>
+					<el-menu-item index="remai1.html">
+						<a href="sort6.html" style="text-decoration: none;">更多</a>
+						
+					</el-menu-item>
+					<el-menu-item index="charge.html">
+						
+					</el-menu-item >
+						<div style="float: right;color: white;padding-top: 23px;padding-right: 23px;"><a href="charge.html" style="text-decoration: none; color: white;">登录</a>
+						&nbsp;&nbsp;|&nbsp;&nbsp;
+						<a href="charge.html" style="text-decoration: none;color: white;">注册</a></div>
+						
+				</el-menu> 
+				<el-form :inline="true" class="demo-form-inline">
+							<el-form-item label="搜索：">
+								<el-input placeholder="请输入关键字(楼盘名或地段名)" v-model="rentdetail.name"></el-input>
+							</el-form-item>
+							<el-form-item>
+								<el-button type="default" >查询</el-button>
+							</el-form-item>
+							<el-form-item>
+								&nbsp;&nbsp;足迹:&nbsp;&nbsp;<a style="color: red;">帮助中心</a>&nbsp;&nbsp;<a style="color: red;">防骗警告</a>&nbsp;&nbsp;<a>个人房</a>&nbsp;&nbsp;<a>精选房</a><a>租房知识</a>&nbsp;&nbsp;
+							</el-form-item>
+						</el-form>
+			</el-header>
+
+			<el-container>
+
+				<el-main class="em1">
+					
+	
+
+					<el-menu :default-active="activeIndex2" class="el-menu-demo" mode="horizontal" background-color="#fff" text-color="#000" active-text-color="#ffd04b">
+					<el-tabs v-model="activeName" @tab-click="handleClick">
+					<el-tab-pane label="区域" name="first">
+						<ul style="float: left;margin：0px;padding：0px;">
+					
+				<li style="list-style: none;margin：0px;font-size: 14px;">
+					区域:&nbsp;&nbsp;
+					<template v-for="zone in zone">
+						<a href="charge.html" style="text-decoration: none;color: black">{{zone.name}}</a>
+					&nbsp;&nbsp;&nbsp;&nbsp;</template></li>
+					<li style="padding-top: 29px;list-style: none;margin：0px;font-size: 14px;">
+						租金:&nbsp;&nbsp;
+						<template v-for="payment in payment">
+							<a href="charge.html" style="text-decoration: none;color: black">{{payment.name}}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+						</template>
+						<form style="display:inline" class="form1" >
+							
+								<input   type="number" maxlength="7" size="1" style="display:inline;width:63px;height: 14px;"></input>-
+								<input   type="number" size="1" maxlength="7" style="display:inline;width:63px;height: 14px;"></input>
+								<input type="submit" style="display:inline"></input>
+							
+						</form>
+					</li>
+					<li style="padding-top: 29px;list-style: none;margin：0px;font-size: 14px;">
+						户型:&nbsp;&nbsp;
+						<template v-for="housetype in housetype">
+							<a href="charge.html" style="text-decoration: none;color: black">{{housetype.name}}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+						</template>
+					</li>
+					<li style="padding-top: 29px;list-style: none;margin：0px;font-size: 14px;">
+						朝向:&nbsp;&nbsp;
+						<template v-for="orientation in orientation">
+							<a href="charge.html" style="text-decoration: none;color: black">{{orientation.name}}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+						</template>
+					</li>
+					<li style="padding-top: 29px;list-style: none;margin：0px;font-size: 14px;">
+						更多:&nbsp;&nbsp;
+						<template v-for="others in others">
+							<a href="charge.html" style="text-decoration: none;color: black">{{others.name}}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+						</template>
+					</li>
+				</ul>
+					</el-tab-pane>
+					<el-tab-pane label="地铁" name="second">配置管理</el-tab-pane>
+					<el-tab-pane label="公交" name="third">角色管理</el-tab-pane>
+					<el-tab-pane label="学校" name="fourth">定时任务补偿</el-tab-pane>
+				</el-tabs>
+				
+					
+						<div style="float: right;color: white;padding-top: 23px;padding-right: 23px;"><a href="charge.html" style="text-decoration: none; color: white;">登录</a>
+						&nbsp;&nbsp;|&nbsp;&nbsp;
+						<a href="charge.html" style="text-decoration: none;color: white;">注册</a></div>
+						
+				</el-menu>
+				
+				</el-main>
+
+			</el-container>
+			
+			
+  		<template v-for="tableData in tableData">
+    	
+    	<div class="hezi" >
+    		<div class="hezir"><img width="100%" :src="tableData.img" href="" style="padding: 10px;" /></div>
+    		<div class="hezir"><h3><a href="forentdetail.html" style="text-decoration: none;color: black;">{{tableData.name}}</a></h3></br>
+    			<h5>{{tableData.name}}</h5></br>
+    			<h5>{{tableData.status}}</h5>
+    		</div>
+    		<div class="hezil">3100
+    		</div>
+    	</div>
+    	
+  		</template>
+  		
+			
+			
+
+			<el-footer class="jiao"><span>版权所有&copy;维权必究</span><br />
+			<span>图片素材来自于互联网</span>
+			</el-footer>
+		</el-container>
+	</body>
+	<script src="js/vue.js"></script>
+	<script src="js/index.js"></script>
+	<script type="text/javascript" src="js/jquery.js"></script>
+	
+<script>
+$(function(){
+  //根据分辨率自适应热区坐标
+    var width = document.body.offsetWidth;
+    var height = document.body.offsetHeith;
+    //if (750 == width) return;
+    var percent = width/1250;//“750”是海报的width，根据在ps上获取的x，y点坐标乘以设备和海报图得到的比例即可。
+    $('.img').each(function(){
+        var coords = $(this).attr("coords");
+        var arr = coords.split(",");
+        for(var i=0;i<arr.length;i++){
+            arr[i] *= percent;
+        }
+        var str = arr.join(",");
+        $(this).attr("coords",str);
+    });
+ 
+});
+</script>
+
+	<script>
+		new Vue({
+			el: "#app",
+			data: {
+				rentdetail:"",
+				dialogFormVisible: false,
+				formLabelWidth: '120px',
+				activeIndex: '1',
+				activeIndex2: '1',
+				city:[   { name: '北京' },
+						{ name: '上海' },
+      				    { name: '深圳' },
+      				    { name: '武汉' },
+      				    { name: '杭州' },
+      				    { name: '郑州' },
+      				    { name: '广州' },
+      				    { name: '大理' },
+      					{ name: '濮阳' }    
+					],
+				zone:[   { name: '不限' },
+						{ name: '园区' },
+      				    { name: '吴中' },
+      				    { name: '姑苏' },
+      				    { name: '相城' },
+      				    { name: '新区' },
+      				    { name: '吴江' },
+      				    { name: '太仓' },
+      					{ name: '张家港' }    
+					],
+				payment:[{ name: '不限' },  
+						{ name: '500元以下' },
+      				    { name: '500-1000元' },
+      				    { name: '1000-2000元' },
+      				    { name: '2000-3000元' },
+      				    { name: '3000-5000元' },
+      				    { name: '5000-8000元' },
+      				    { name: '8000元以上' }  
+					],
+				housetype:[  { name: '不限' },
+      				    { name: '一居' },
+      				    { name: '二居' },
+      				    { name: '三居' },
+      				    { name: '四居' },
+      				    { name: '四居以上' },    
+					],	
+				orientation:[  { name: '不限' },
+      				    { name: '南北通透' },
+      				    { name: '东西向' },
+      				    { name: '朝北' },
+      				    { name: '朝东' },
+      				    { name: '朝西' }, 
+      				     { name: '朝南' },  
+					],
+				others:[  
+      				    { name: '进地铁' },
+      				    { name: '家具全' }, 
+      				     { name: '电梯房' },  
+					],	
+				tableData: [ { name: '香城花园 此房位置好,小区中间位置,前方无遮挡,户型正 面积',img:'img/main/rent (1).jpg',status:'整租 | 两室两厅 | 89㎡ | 朝南' },
+      						{ name: '钟南花苑2室出租!!!钥匙在手看房方便',img:'img/main/rent (2).jpg',status:'整租 | 两室两厅 | 89㎡ | 朝南' },
+      						{ name: '地铁口 阳光天地 交通便利 居家精装 拎包入住',img:'img/main/rent (3).jpg',status:'整租 | 两室两厅 | 89㎡ | 朝南' }],
+				root: {},
+				user:"",
+				activeName: 'first',
+				rentquery:[]
+
+			},
+			mounted: function() {
+				this.menuTree(); 
+			},
+
+			methods: {
+				 handleClick:function(tab, event) {
+       			 console.log(tab, event);
+      		},
+				check: function(row) {
+					localStorage.clear();
+					localStorage.setItem("goodsid",row);
+					location.href="detail.html";
+				},
+				menuTree: function() {
+					var userJsonStr = sessionStorage.getItem('UserIfo');
+					var userEntity = JSON.parse(userJsonStr);
+					this.user = userEntity.name;
+					var _this = this;
+					//http://localhost/SpringJavaWeb4/menuTree
+					$.post("http://localhost/SpringJavaWeb7/menuTree", function(menu) {
+						_this.root = menu;
+
+					})
+				}
+
+			}
+		})
+	</script>
+
+</html>

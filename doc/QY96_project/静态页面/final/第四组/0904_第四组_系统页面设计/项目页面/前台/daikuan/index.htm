@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0022)http://qq1.czwdydk.cn/ -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+		<link type="text/css" href="red.css" tppabs="http://kuaisu.czwdydk.cn/index_files/red.css" rel="stylesheet">
+		<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" name="viewport">
+		<meta content="yes" name="apple-mobile-web-app-capable">
+		<meta content="yes" name="apple-touch-fullscreen">
+		<meta content="black" name="apple-mobile-web-app-status-bar-style">
+		<meta content="320" name="MobileOptimized">
+
+		<meta content="telephone=no" name="format-detection">
+		<title>申请贷款</title>
+		<link rel="stylesheet" href="style.css" tppabs="http://kuaisu.czwdydk.cn/index_files/style.css" type="text/css">
+
+		<script type="text/javascript" async="" src="toutiao-track-log.js" tppabs="http://kuaisu.czwdydk.cn/index_files/toutiao-track-log.js"></script>
+
+		<style type="text/css">
+			<!-- body {
+				background-color: #FFFFFF;
+			}
+			
+			.wforder {
+				max-width: 100%;
+			}
+			
+			.wftitle {
+				background: #49b6ff;
+			}
+			
+			-->
+		</style>
+
+		<!-- 先引入 Vue -->
+	<script src="js/vue.js"></script>
+	<!-- 引入组件库 -->
+	<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<!-- 引入组件库 -->
+	<script src="js/index.js"></script>
+
+		<link rel="stylesheet" type="text/css" href="main.css" tppabs="http://kuaisu.czwdydk.cn/index_files/main.css">
+
+	</head>
+
+	<body cz-shortcut-listen="true">
+		<div class="container" style="padding-top:0;">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tbody>
+					<tr>
+						<td align="center"><img src="banner.jpg" tppabs="http://kuaisu.czwdydk.cn/index_files/banner.jpg" width="100%"></td>
+					</tr>
+				</tbody>
+			</table>
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tbody>
+					<tr>
+						<td align="center" bgcolor="#FFFFFF">
+							<div class="wforder">
+				
+                  <el-container id="app">
+			         <el-main>
+								<form method="post" name="form1" id="form1" target="_parent" onSubmit="return checkform(this)">
+									<div class="wfwrap">
+										<div class="wfwrapbox pt15">
+										<!---------- 产品套餐 ---------->
+											<div class="wfform-box">
+												<label class="wfform-label">额度</label>
+												<div class="wfform-pro">
+													<select name="dkjine" id="content" lay-verify="product" class="select">
+														<option value="">请选择额度</option>
+														<option value="3000">3000</option>
+														<option value="5000">5000</option>
+														<option value="8000">8000</option>
+														<option value="10000">10000</option>
+														<option value="15000">15000</option>
+														<option value="20000">20000</option>
+														<option value="30000">30000</option>
+														<option value="40000">40000</option>
+													</select>
+												</div>
+											</div>
+											<!---------- 产品套餐 ---------->
+											<!---------- 期限 ---------->
+											<div class="wfform-box">
+												<label class="wfform-label">期限</label>
+												<div class="wfform-pro frame">
+													<select name="xingbie" id="qx" class="select">
+														<option value="3个月">3个月</option>
+														<option value="6个月">6个月</option>
+														<option value="12个月">12个月</option>
+
+													</select>
+												</div>
+											</div>
+											<!---------- 期限 ---------->
+										</div>
+									</div>
+									<!---------- 赠送产品 ---------->
+									<!---------- 赠送产品 ---------->
+									<!---------- 表单主体 ---------->
+									<div class="wfwrap">
+										<div class="wfwrapbox pt15">
+											<!---------- 表单选项 ---------->
+											<div class="wfform-box">
+												<label class="wfform-label">姓名</label>
+												<div class="wfform-opt">
+													<input type="text" name="xingming" lay-verify="name" id="aa1" placeholder="请填写姓名" class="input-text">
+												</div>
+											</div>
+
+											<div class="wfform-box">
+												<label class="wfform-label">手机号码</label>
+												<div class="wfform-opt">
+													<input type="tel" name="shouji" v-model="pfincome" οnkeyup="value=value.replace(/[^\d]/g,&#39;&#39;) " ng-pattern="/[^a-zA-Z]/" maxlength="11" placeholder="请填写手机号码" class="input-text" style="border:#cccccc 1px solid">
+												</div>
+											</div>
+
+											<div class="wfform-box">
+												<label class="wfform-label">身份证号</label>
+												<div class="wfform-opt">
+													<input type="text" name="shenfenzheng" placeholder="请填写身份证号码" class="input-text">
+												</div>
+											</div>
+
+											<div class="wfform-box">
+												<label class="wfform-label">详细地址</label>
+												<div class="wfform-opt">
+
+													<input type="text" id="dz" name="dizhi" lay-verify="address" placeholder="请填写详细地址" class="input-text">
+
+												</div>
+
+											</div>
+
+											<div class="wfform-box">
+												<label class="wfform-label">贷款种类</label>
+												<div class="wfform-opt">
+                                                <input type="text" value="租房贷款" readonly="readonly" class="input-text">
+												</div>
+
+											</div>
+
+											<div class="wfform-box">
+												<label class="wfform-label">单位地址</label>
+												<div class="wfform-opt">
+
+													<input type="text" id="dz" name="dkyongtu" lay-verify="address" placeholder="请填写单位所在地址" class="input-text">
+
+												</div>
+
+											</div>
+											<div class="wfform-box">
+												<label class="wfform-label">单位联系人</label>
+												<div class="wfform-opt">
+
+													<input type="text" id="dz" name="dkyongtu" lay-verify="address" placeholder="请填写单位联系人电话" class="input-text">
+
+												</div>
+
+											</div>
+
+										</div>
+									</div>
+									<!---------- 表单主体 ---------->
+									<div class="wfwrap">
+										<div class="wfform-box">
+
+											<button frmid='form1' action="order.asp.htm" tppabs="http://kuaisu.czwdydk.cn/order.asp" type="button" style="background-color: #39B0FF;color: #fff;cursor: pointer;font-weight: bold; border:#0099FF 1px solid; width:100%; padding:8px; font-size:14px" class="submit am-btn am-btn-green am-btn-block mt20 fl">立即提交</button>
+
+										</div>
+									</div>
+								</form>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+				<tbody>
+					<tr>
+						<td bgcolor="#FFFFFF"><img src="sm.jpg" tppabs="http://kuaisu.czwdydk.cn/index_files/sm.jpg" width="100%"></td>
+					</tr>
+					<tr>
+						<td bgcolor="#FFFFFF">&nbsp;</td>
+					</tr>
+				</tbody>
+			</table>
+			
+		</div>
+		
+
+	</body>
+
+	
+	
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>贷款</title>
+		<link rel="stylesheet" href="css/index.css">
+		<!--<link rel="shortcut icon" href="images/favicon.ico" />-->
+		<link type="text/css" href="css/css.css" rel="stylesheet" />
+		<script src="js/vue.js"></script>
+		<script src="js/index.js"></script>
+		<script type="text/javascript" src="js/axios.js"></script>
+		<script type="text/javascript" src="js/jquery.js"></script>
+	</head>
+	<body>
+	<el-container id="app" >
+				<div style="margin-left:20% ;margin-right: 20%;" >
+					<el-form ref="form" :model="form"  label-width="80px" >
+						<el-form>
+							<input type="hidden"  />
+							<el-form-item label="还款策略：先息后本，12期" >
+								
+							</el-form-item>
+							<el-form-item label="当前状态：还有5期，共10000元未还" >
+								
+							</el-form-item>
+							<el-form-item label="每月还款日期：20号" >
+								
+							</el-form-item>
+							<el-form-item label="本月应还：2000元" >
+								
+							</el-form-item>
+							  <el-button type="success" round>立即还款</el-button>
+							  <el-button type="primary" round>返回主页</el-button>
+						</el-form>
+					</el-form>
+					</div>
+					<!--========备用弹出页=========-->
+				<!--<el-dialog title="菜单" :visible.sync="dialogFormVisible">
+						<el-form>
+							<input type="hidden"  />
+							<el-form-item label="子条款1" >
+								<el-input :disabled="true" :value="1111" ></el-input>
+							</el-form-item>
+							<el-form-item label="子条款2" >
+								<el-input :disabled="true" :value="1111" ></el-input>
+							</el-form-item>
+							<el-form-item label="子条款2" >
+								<el-input :disabled="true" :value="1111" ></el-input>
+							</el-form-item>
+							
+						</el-form>
+						<div slot="footer" class="dialog-footer">
+							<el-button @click="dialogFormVisible = false">取 消</el-button>
+							<el-button type="primary" @click="save">确 定</el-button>
+						</div>
+					</el-dialog>
+				-->
+				</el-container>
+	</body>
+	<script>
+		new Vue({
+			el: '#app',
+			data: {
+				dialogFormVisible: false,
+				form: {
+					name: '',
+					region: '',
+					date1: '',
+					date2: '',
+					delivery: false,
+					type: [],
+					resource: '',
+					desc: ''
+				}
+			},
+			methods: {
+				onSubmit:function(){
+					this.dialogFormVisible=true;
+				},
+				save:function(){
+					alert("申请已发送,正在审核中");
+					this.dialogFormVisible=false;
+				}
+			}
+
+		})
+	</script>
+</html>

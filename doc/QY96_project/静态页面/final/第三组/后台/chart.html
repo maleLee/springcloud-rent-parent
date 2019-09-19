@@ -1,0 +1,208 @@
+<!doctype html>
+<html>
+<head>
+<title>Easy_live报表分析</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<meta name="keywords" content="Trendy Graphs and Charts Responsive, Login form web template, Sign up Web Templates, Flat Web Templates, Login signup Responsive web template, Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<link href='//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+<script src="js/jquery-latest.min.js"></script>
+<link href="css/piechart.css" rel="stylesheet">
+<!-- font-awesome icons -->
+	 <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/material-design-iconic-font.min.css">
+   
+<!-- //font-awesome icons -->
+</head>
+<body>
+<div class="content" id="Main-Content" style="background-color: #1F2124;">
+	<h1>数据分析表</h1>
+		<div class="top-grids">
+			<!-- customizable-grids -->
+			<div class="customizable-grids">
+				<h3>数据表现形式</h3>
+				<div class="GaugeMeter" id="PreviewGaugeMeter_1" data-percent="90" data-prepend="<font style='color:#000000;font-size:35px;margin-left:-15px'>&ndash;</font>" data-size="188" data-theme="#000000" data-back="RGBa(0,0,0,.1)" data-animate_gauge_colors="1" data-animate_text_colors="1" data-width="2" data-label="Years" data-label_color="#FFF"></div>
+				<div class="GaugeMeter" id="PreviewGaugeMeter_2" data-percent="30" data-append="mph" data-size="200" data-theme="#000000" data-back="RGBa(0,0,0,.1)" data-animate_gauge_colors="1" data-animate_text_colors="1" data-width="15" data-label="Speed" data-style="Arch" data-label_color="#FFF"></div>
+				<div class="GaugeMeter" id="PreviewGaugeMeter_3" data-percent="60" data-text="<font style='color:#000000;font-size:35px;letter-spacing:-1px'>90</font>" data-append="<font style='color:#000000'>GW</font>" data-size="200" data-theme="#000000" data-back="RGBa(0,0,0,.1)" data-width="15" data-label="Mr Fusion" data-style="Semi" data-label_color="#FFF"></div>
+			</div>
+			<div class="agile-bottom">
+				<div class="agile-bottom-left">
+					<h3>扇形统计图</h3>
+					<div class="example" onpagenavigation id="demo"></div>
+				</div>
+				<div class="agile-bottom-right">
+					<h3>改变的扇形图</h3>
+					<div class="agile-bottom-right-info">
+						<div id="piechart" style="position: absolute; top: 0; left: 0; height: 100%;"></div>
+					</div>
+				</div>
+				<div class="clear"> </div>
+			</div>
+			<div class="agile-grids">
+				<h3>细节统计</h3>
+				<div class="row">
+					<div class="circle-grid">
+						<div id="test-circle"></div>
+					</div>
+					<div class="circle-grid">
+						<div id="test-circle2"></div>
+					</div>
+					<div class="circle-grid">
+						<div id="test-circle3"></div>
+					</div>
+					<div class="circle-grid">
+						<div id="test-circle4"></div>
+					</div>
+					<div class="circle-grid">
+						<div id="test-circle5"></div>
+					</div>
+					<div class="clear"> </div>
+				</div>
+			</div>
+		</div>
+		<div class="copyright">
+			<p class="footer">&copy; 2016 easy_live易居系统. All Rights Reserved | Design by <a href="#"> 牛批第三组</a></p>
+		</div>
+		<script src="js/piechart.js"></script>
+		
+		<script src="js/d3.min.js"></script>
+		<script src="js/noterik-data-visualizations-1.0.0.min.js"></script>
+		<script src="js/chance.min.js"></script>
+		<script>
+			$(document).ready(function(){
+			  //Lets generate some data:
+
+			  var maxLabels = 5
+				minValue = 1,
+				maxValue = 5;
+				maxTicks = 10;
+
+			  var data = [];
+
+			  var addValue = function(values){
+				values.push({
+				  label: chance.word(),
+				  value: chance.integer({min: minValue, max: maxValue}),
+				  color: chance.color({format: 'hex'})
+				});
+			  };
+
+			  var changeValues = function(values){
+				values.forEach(function(val){
+				  val.value = chance.integer({min: minValue, max: maxValue});
+				})
+			  }
+
+			  addValue(data);
+
+			  var piechart = $('#piechart').ntkPieChart({
+				data: data
+			  });
+
+			  var currentTick = 0;
+
+			  setInterval(function(){
+				if(currentTick < maxTicks){
+				  if(currentTick < maxLabels){
+					addValue(data);
+				  }else{
+					changeValues(data);
+				  }
+				  currentTick++;
+				  changeValues(data);
+				  piechart.ntkPieChart('redraw');
+				}else{
+				  data = [];
+				  piechart.ntkPieChart('setData', data);
+				  currentTick = 0;
+				  piechart.ntkPieChart('redraw');
+				}
+			  }, 2000);
+
+
+			});
+		</script>
+		<script src="js/jquery.AshAlom.gaugeMeter-2.0.0.min.js"></script> 
+		<script>
+		$(".GaugeMeter").gaugeMeter();
+		</script>
+		
+		<!-- circliful -->
+		<script src="js/jquery.circliful.js"></script>
+		<script>
+			$( document ).ready(function() { // 6,32 5,38 2,34
+				$("#test-circle").circliful({
+					animation: 1,
+					animationStep: 5,
+					foregroundBorderWidth: 15,
+					backgroundBorderWidth: 15,
+					percent: 38,
+					textSize: 28,
+					textStyle: 'font-size: 12px;',
+					textColor: '#666',
+					multiPercentage: 1,
+					percentages: [10, 20, 30]
+				});
+
+				$("#test-circle2").circliful({
+					animation: 0,
+					animationStep: 6,
+					foregroundBorderWidth: 5,
+					backgroundColor: "none",
+					fillColor: '#eee',
+					percent: 50,
+					iconColor: '#3498DB',
+					icon: 'f206',
+					iconSize: '40',
+					iconPosition: 'middle'
+				});
+
+				$("#test-circle3").circliful({
+					animation: 1,
+					animationStep: 6,
+					foregroundBorderWidth: 5,
+					backgroundBorderWidth: 1,
+					percent: 88,
+					iconColor: '#3498DB',
+					icon: 'f004',
+					iconSize: '40',
+					iconPosition: 'middle'
+				});
+
+				$("#test-circle4").circliful({
+					animation: 1,
+					animationStep: 1,
+					target: 10,
+					start: 2,
+					showPercent: 1,
+					backgroundColor: '#000',
+					foregroundColor: '#A8C64A',
+					fontColor: '#000',
+					iconColor: '#000',
+					icon: 'f0a0',
+					iconSize: '40',
+					iconPosition: 'middle',
+					multiPercentage: 1,
+					text: 'No Kids'
+				});
+
+				$("#test-circle5").circliful({
+					animationStep: 5,
+					foregroundBorderWidth: 5,
+					backgroundBorderWidth: 15,
+					percent: 80,            
+					icon: 'f0a0',
+					iconPosition: 'middle',
+					text: 'Space Left',            
+					textBelow: true
+				});
+			});
+
+		</script>
+		<!-- //circliful -->
+</div>
+
+</body>
+</html>

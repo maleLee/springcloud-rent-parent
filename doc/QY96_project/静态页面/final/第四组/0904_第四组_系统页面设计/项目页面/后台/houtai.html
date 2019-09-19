@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<link rel="stylesheet" href="css/index.css" />
+	<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/index.js" type="text/javascript" charset="utf-8"></script>
+
+	<body>
+		<el-container id="app">
+			<el-aside width="200px">
+				<el-menu>
+					<el-col :span="24">
+
+						<el-menu default-active="2" class="el-menu-vertical-demo" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+							<el-submenu index="1">
+								<template slot="title">
+									<i class="el-icon-phone"></i>
+									<span>用户管理</span>
+								</template>
+
+								<el-menu-item index="1-1">员工管理</el-menu-item>
+								<el-menu-item index="1-2">租客房东管理</el-menu-item>
+
+							</el-submenu>
+							<el-submenu index="2">
+								<template slot="title">
+									<i class="el-icon-view"></i>
+									<span>审核管理</span>
+								</template>
+
+								<el-submenu index="2-1">
+									<template slot="title">贷款申请审核</template>
+									<el-menu-item index="2-1-1">贷款一级审核</el-menu-item>
+									<el-menu-item index="2-1-2">贷款二级审核</el-menu-item>
+								</el-submenu>
+
+								<el-submenu index="2-2">
+									<template slot="title">房源发布审核</template>
+									<el-menu-item index="2-2-1">房源一级审核</el-menu-item>
+									<el-menu-item index="2-2-2">房源二级审核</el-menu-item>
+								</el-submenu>
+							</el-submenu>
+							<el-menu-item index="3">
+								<i class="el-icon-location"></i>
+								<span slot="title">房源管理</span>
+							</el-menu-item>
+							<el-menu-item index="4">
+								<i class="el-icon-setting"></i>
+								<span slot="title">贷款管理</span>
+							</el-menu-item>
+							<el-menu-item index="5">
+								<i class="el-icon-setting"></i>
+								<span slot="title">租赁管理</span>
+							</el-menu-item>
+							<el-menu-item index="6">
+								<i class="el-icon-edit-outline"></i>
+								<span slot="title">结算分析</span>
+							</el-menu-item>
+							<el-menu-item index="7">
+								<i class="el-icon-document"></i>
+								<span slot="title">日志管理</span>
+							</el-menu-item>
+						</el-menu>
+					</el-col>
+					</el-row>
+			</el-aside>
+			<el-container>
+				<el-header style=padding-left:0px;padding-right:0px;>
+					<el-menu class="el-menu-demo header-demo" mode="horizontal" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+						<!--<el-menu-item index="1">处理中心</el-menu-item>-->
+						<el-submenu index="2">
+
+							<el-menu-item index="2-1">修改密码</el-menu-item>
+							<el-menu-item index="2-2">退出登陆</el-menu-item>
+							<el-menu-item index="2-3">测试3</el-menu-item>
+							<el-submenu index="2-4">
+								<template slot="title">测试4</template>
+								<el-menu-item index="2-4-1">选项1</el-menu-item>
+								<el-menu-item index="2-4-2">选项2</el-menu-item>
+								<el-menu-item index="2-4-3">选项3</el-menu-item>
+							</el-submenu>
+						</el-submenu>
+						<!--<el-menu-item index="3">消息中心</el-menu-item>-->
+						<!--<el-menu-item index="4">
+							<a href="https://www.ele.me" target="_blank" style=text-decoration:none;>订单管理</a>
+						</el-menu-item>-->
+
+						<template>
+							<div>
+								<el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+							</div>
+						</template>
+					</el-menu>
+				</el-header>
+				<el-main>
+					<el-form :inline="true" class="demo-form-inline">
+						<el-form-item label="审批人">
+							<el-input placeholder="审批人"></el-input>
+						</el-form-item>
+						<el-form-item label="活动区域">
+							<el-select placeholder="活动区域">
+								<el-option label="区域一" value="shanghai"></el-option>
+								<el-option label="区域二" value="beijing"></el-option>
+							</el-select>
+						</el-form-item>
+						<el-form-item>
+							<el-button type="primary">查询</el-button>
+						</el-form-item>
+						
+						<template>
+							<el-table :data="tableData" style="width: 100%">
+								<el-table-column prop="date" label="日期" width="180">
+								</el-table-column>
+								<el-table-column prop="name" label="姓名" width="180">
+								</el-table-column>
+								<el-table-column prop="address" label="地址">
+								</el-table-column>
+							</el-table>
+						</template>
+					</el-form>
+				</el-main>
+				<el-footer>
+
+				</el-footer>
+			</el-container>
+		</el-container>
+		<script type="text/javascript">
+			var app = new Vue({
+				el: "#app",
+				data: {
+					 tableData: [{
+            date: '2016-05-02',
+            name: '付猛',
+            address: '上海市普陀区金沙江路 1518 弄'
+          }, {
+            date: '2016-05-04',
+            name: '宋鹏举',
+            address: '北京市金沙港南湾路十字街'
+          }, {
+            date: '2016-05-01',
+            name: '叶奇超',
+            address: '河南省郑州市高新区66号'
+          }, {
+            date: '2016-05-03',
+            name: '王小虎',
+            address: '四川省南充市八卦街十字路'
+          }]
+				},
+				mounted: function() { //在这里实现onload事件
+
+				},
+				methods: {
+
+				}
+
+			})
+		</script>
+
+	</body>
+
+</html>

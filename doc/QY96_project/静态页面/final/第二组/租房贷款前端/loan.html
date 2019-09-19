@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>贷款</title>
+		<link rel="stylesheet" href="css/index.css">
+		<!--<link rel="shortcut icon" href="images/favicon.ico" />-->
+		<link type="text/css" href="css/css.css" rel="stylesheet" />
+		<script  src="js/jquery.js" type="text/javascript"></script>
+		<script src="js/vue.js"></script>
+		<script src="js/index.js"></script>
+		<script type="text/javascript" src="js/axios.js"></script>
+
+
+		<script type="text/javascript">
+			$(function() {
+				//导航定位
+				$(".nav li:eq(4)").addClass("navCur");
+			})
+		</script>
+	</head>
+
+	<body>
+		<div class="header">
+			<div class="width1190">
+				<div class="fl">您好，欢迎来到租房无忧！</div>
+				<div class="fr">
+					<a href="login.html">登录</a> |
+					<a href="reg.html">注册</a> |
+					<a href="javascript:;" onclick="AddFavorite(window.location,document.title)">加入收藏</a> |
+					<a href="javascript:;" onclick="SetHome(this,window.location)">设为首页</a>
+				</div>
+				<div class="clears"></div>
+			</div>
+			<!--width1190/-->
+		</div>
+		<!--header/-->
+		<div class="logo-phone">
+			<div class="width1190">
+				<h1 class="logo"><a href="index.html"><img src="images/logo.png" width="163" height="59" /></a></h1>
+				<div class="phones"><strong>021-63179891</strong></div>
+				<div class="clears"></div>
+			</div>
+			<!--width1190/-->
+		</div>
+		<!--logo-phone/-->
+		<div class="list-nav">
+			<div class="width1190">
+				<div class="list">
+					<h3>房源分类</h3>
+					<!--<div class="list-list" display="true">
+						<dl>
+							<dt><a href="javascript:;">房源区域</a></dt>
+							<dd>
+								<a href="javascript:;">金水区</a>
+								<a href="javascript:;">管城区</a>
+								<a href="javascript:;">高新区</a>
+								<a href="javascript:;">二七区</a>
+								<a href="javascript:;">整东新区</a>
+								<a href="javascript:;">惠济区</a>
+								<a href="javascript:;">中原区</a>
+								<a href="javascript:;">经开区</a>
+								<a href="javascript:;">滨河国际新城</a>
+							</dd>
+						</dl>
+						<dl>
+							<dt><a href="pro_zu.html">租房</a></dt>
+							<dd>
+								<a href="pro_zu.html">租金</a>
+								<a href="pro_zu.html">出租方式</a>
+								<a href="pro_zu.html">面积</a>
+								<a href="pro_zu.html">房型</a>
+							</dd>
+						</dl>
+						<dl>
+							<dt><a href="pro_xin.html">新房</a></dt>
+							<dd>
+								<a href="pro_zu.html">租金</a>
+								<a href="pro_zu.html">出租方式</a>
+								<a href="pro_zu.html">面积</a>
+								<a href="pro_zu.html">房型</a>
+							</dd>
+						</dl>
+					</div>-->
+				</div>
+				<!--list/-->
+				<ul class="nav">
+					<li>
+						<a href="index.html">首页</a>
+					</li>
+					<li>
+						<a href="pro_zu.html">租房</a>
+					</li>
+					<li>
+						<a href="pro_xin.html">新房</a>
+					</li>
+					<li class="zhiding">
+						<a href="javascript:;">指定购房</a>
+					</li>
+					<li>
+						<a href="loan.html">贷款申请</a>
+					</li>
+					<li>
+						<a href="uphoom.html">发布房源</a>
+					</li>
+					<div class="clears"></div>
+				</ul>
+				<!--nav/-->
+
+				<div class="clears"></div>
+
+				<el-container id="app" >
+				<div style="margin-left:30% ;margin-right: 30%;" >
+					<el-form ref="form" :model="form"  label-width="80px" >
+						<el-form-item label="贷款金额">
+							<el-input v-model="form.name"></el-input>
+						</el-form-item>
+						<el-form-item label="还款卡号">
+							<el-input v-model="form.name"></el-input>
+						</el-form-item>
+						
+						<el-form-item label="居住地址">
+							<el-select v-model="form.region" placeholder="请选择省份">
+								<el-option label="河南" value="shanghai"></el-option>
+								<el-option label="河北" value="beijing"></el-option>
+							</el-select>
+							
+							<el-select v-model="form.region" placeholder="请选择城市">
+								<el-option label="郑州" value="shanghai"></el-option>
+								<el-option label="周口" value="beijing"></el-option>
+							</el-select>
+						</el-form-item>
+						<el-form-item label="贷款时间">
+							<el-col :span="11">
+								<el-date-picker type="date" placeholder="选择日期" v-model="form.date1" style="width: 100%;"></el-date-picker>
+							</el-col>
+						<el-col class="line" :span="2">-</el-col>
+							<el-col :span="11">
+								<el-time-picker type="fixed-time" placeholder="选择时间" v-model="form.date2" style="width: 100%;"></el-time-picker>
+							</el-col>
+						</el-form-item>
+						<el-form-item label="先息后本">
+							<el-switch v-model="form.delivery"></el-switch>
+						</el-form-item>
+						
+						<el-form-item label="贷款分期">
+							<el-radio-group v-model="form.resource">
+								<el-radio label="3个月"></el-radio>
+								<el-radio label="6个月"></el-radio>
+								<el-radio label="12个月"></el-radio>
+							</el-radio-group>
+						</el-form-item>
+						<el-form-item>
+							<el-button type="primary" @click="onSubmit">立即申请</el-button>
+							<el-button  @click="save">取消</el-button>
+						</el-form-item>
+					</el-form>
+					</div>
+					<!--========用户条款=========-->
+				<el-dialog title="菜单" :visible.sync="dialogFormVisible">
+						<el-form>
+							<input type="hidden"  />
+							<el-form-item label="子条款1" >
+								<el-input :disabled="true" :value="1111" ></el-input>
+							</el-form-item>
+							<el-form-item label="子条款2" >
+								<el-input :disabled="true" :value="1111" ></el-input>
+							</el-form-item>
+							<el-form-item label="子条款2" >
+								<el-input :disabled="true" :value="1111" ></el-input>
+							</el-form-item>
+							
+						</el-form>
+						<div slot="footer" class="dialog-footer">
+							<el-button @click="dialogFormVisible = false">取 消</el-button>
+							<el-button type="primary" @click="save">确 定</el-button>
+						</div>
+					</el-dialog>
+				
+				</el-container>
+				
+<div class="footer">
+  <div class="width1190">
+   <div class="fl"><a href="index.html"><strong>租房无忧</strong></a><a href="about.html">关于我们</a><a href="contact.html">联系我们</a><a href="user.html">个人中心</a></div>
+   <div class="fr">
+    <dl>
+     <dt><img src="images/erweima.png" width="76" height="76" /></dt>
+     <dd>微信扫一扫<br />房价点评，精彩发布</dd>
+    </dl>
+    <dl>
+     <dt><img src="images/erweima.png" width="76" height="76" /></dt>
+     <dd>微信扫一扫<br />房价点评，精彩发布</dd>
+    </dl>
+    <div class="clears"></div>
+   </div>
+   <div class="clears"></div>
+  </div><!--width1190/-->
+ </div><!--footer/-->
+ <div class="copy">Copyright@ 2019 租房无忧 版权所有 沪ICP备1234567号-0&nbsp;&nbsp;&nbsp;&nbsp;技术支持：<a target="_blank" href="http://www.webqin.net/">秦王网络</a> </div>
+ <div class="bg100"></div>
+ <div class="zhidinggoufang">
+  <h2>指定购房 <span class="close">X</span></h2>
+  <form action="#" method="get">
+   <div class="zhiding-list">
+    <label>选择区域：</label>
+    <select>
+     <option>金水区</option>
+     <option>管城区</option>
+     <option>高新区</option>
+     <option>二七区</option>
+     <option>郑东新区</option>
+     <option>惠济区</option>
+     <option>中原区</option>
+     <option>经开区</option>
+     <option>滨河国际新城</option>
+    </select>
+   </div>
+   <div class="zhiding-list">
+    <label>方式：</label>
+    <select>
+     <option>租房</option>
+     <option>新房</option>
+    </select>
+   </div>
+   <div class="zhiding-list">
+    <label>联系方式：</label>
+    <input type="text" />
+   </div>
+   <div class="zhidingsub"><input type="submit" value="提交" /></div>
+  </form>
+  <div class="zhidingtext">
+   <h3>指定购房注意事宜：</h3>
+   <p>1、请详细输入您所需要购买的房源信息(精确到小区)</p>
+   <p>2、制定购房申请提交后，客服中心会在24小时之内与您取得联系</p>
+   <p>3、如有任何疑问，请随时拨打我们的电话：400-000-0000</p>
+  </div><!--zhidingtext/-->
+ </div><!--zhidinggoufang/-->
+	</body>
+	<script>
+		new Vue({
+			el: '#app',
+			data: {
+				dialogFormVisible: false,
+				form: {
+					name: '',
+					region: '',
+					date1: '',
+					date2: '',
+					delivery: false,
+					type: [],
+					resource: '',
+					desc: ''
+				}
+			},
+			methods: {
+				onSubmit:function(){
+					this.dialogFormVisible=true;
+				},
+				save:function(){
+					alert("申请已发送,正在审核中");
+					this.dialogFormVisible=false;
+				}
+			}
+
+		})
+	</script>
+
+</html>

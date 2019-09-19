@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link rel="stylesheet" href="css/index.css" />
+		<script src="js/jquery.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/index.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/echarts.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<style>
+		body {
+			margin: 0px;
+			width: 100%;
+			height: 100%;
+		}
+
+		.header {
+			padding: 0px;
+		}
+
+		#main {
+			height: 887px;
+		}
+
+		.el-menu.el-menu--horizontal {
+			border-bottom: solid 0px;
+			background-color: #22252A;
+		}
+
+		/* #aside .el-submenu__title{
+			width: 200px;
+		} */
+		.element.style {
+			background-color: #000000;
+		}
+
+		.el-input__inner {
+			width: 200px;
+		}
+
+		.el-menu-demo li .el-menu-item {
+			width: 100px;
+		}
+
+		.el-menu {
+			height: 100%;
+			width: 100%;
+			border-right: solid 0px;
+		}
+
+		.el-menu-demo {
+			background-color: #22252A;
+			active-text-color: "#ffd04b";
+			width: 100%;
+		}
+
+		.el-menu-vertical-demo .el-menu {
+			background-color: #22252A;
+		}
+
+		.el-dropdown-link {
+			cursor: pointer;
+			color: #409EFF;
+		}
+
+		.el-icon-arrow-down {
+			font-size: 12px;
+		}
+
+		#user_main {
+
+			padding-top: 50px;
+			padding-left: 200px;
+			padding-bottom: 20px;
+			padding-right: 100px;
+
+		}
+
+		#user_add {
+			margin-left: 100px;
+		}
+	</style>
+	<body>
+		<div id="app">
+			<el-container>
+				<el-header class="header">
+					<el-menu class="el-menu-demo" mode="horizontal">
+						<el-menu-item index="1"><img style="{width:50px;height:50px ;}" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;张三</el-menu-item>
+						<el-submenu index="2">
+							<template slot="title">个人中心</template>
+							<el-menu-item index="2-1">我的资料</el-menu-item>
+							<el-menu-item index="2-2">上传头像</el-menu-item>
+							<el-menu-item index="2-3">修改密码</el-menu-item>
+						</el-submenu>
+						<el-menu-item index="3">消息中心</el-menu-item>
+						
+					</el-menu>
+				</el-header>
+				<el-container id="main">
+					<el-aside id="aside" width="200px">
+						<el-menu class="el-menu-vertical-demo" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+							<el-submenu index="1">
+								<template slot="title">
+									<i class="el-icon-menu"></i>
+									<span slot="title">系统管理</span>
+								</template>
+								<el-menu-item-group>
+									<el-menu-item index="1-1">&nbsp;&nbsp;&nbsp;&nbsp;用户管理</el-menu-item>
+									<el-menu-item index="1-1">&nbsp;&nbsp;&nbsp;&nbsp;角色管理</el-menu-item>
+									<el-menu-item index="1-1">&nbsp;&nbsp;&nbsp;&nbsp;权限管理</el-menu-item>
+									<el-menu-item index="1-1">&nbsp;&nbsp;&nbsp;&nbsp;菜单管理</el-menu-item>
+								</el-menu-item-group>
+							</el-submenu>
+							<el-submenu index="2">
+								<template slot="title">
+									<i class="el-icon-menu"></i>
+									<span slot="title">审核管理</span>
+								</template>
+								<el-menu-item-group>
+									<el-menu-item index="1-2">&nbsp;&nbsp;&nbsp;&nbsp;房源一级审核</el-menu-item>
+									<el-menu-item index="1-2">&nbsp;&nbsp;&nbsp;&nbsp;房源二级审核</el-menu-item>
+									<el-menu-item index="1-2">&nbsp;&nbsp;&nbsp;&nbsp;贷款一级审核</el-menu-item>
+									<el-menu-item index="1-2">&nbsp;&nbsp;&nbsp;&nbsp;贷款二级审核</el-menu-item>
+								</el-menu-item-group>
+							</el-submenu>
+							<el-submenu index="3">
+								<template slot="title">
+									<i class="el-icon-menu"></i>
+									<span slot="title">贷款管理</span>
+								</template>
+								<el-menu-item-group>
+									<el-menu-item index="1-3">&nbsp;&nbsp;&nbsp;&nbsp;贷款订单</el-menu-item>
+									<el-menu-item index="1-3">&nbsp;&nbsp;&nbsp;&nbsp;还款订单</el-menu-item>
+									<el-menu-item index="1-3">&nbsp;&nbsp;&nbsp;&nbsp;逾期订单</el-menu-item>
+								</el-menu-item-group>
+							</el-submenu>
+							<el-submenu index="4">
+								<template slot="title">
+									<i class="el-icon-menu"></i>
+									<span slot="title">房源管理</span>
+								</template>
+								<el-menu-item-group>
+									<el-menu-item index="1-2">&nbsp;&nbsp;&nbsp;&nbsp;房东房源</el-menu-item>
+									<el-menu-item index="1-2">&nbsp;&nbsp;&nbsp;&nbsp;经纪人房源</el-menu-item>
+
+								</el-menu-item-group>
+							</el-submenu>
+							<el-submenu index="5">
+								<template slot="title">
+									<i class="el-icon-menu"></i>
+									<span slot="title">结算分析</span>
+								</template>
+								<el-menu-item-group>
+									<el-menu-item index="1-2"  >&nbsp;&nbsp;&nbsp;&nbsp;<a href="Analysis.html" target="showSon" >日营业额</a></el-menu-item>
+									<el-menu-item index="1-2">&nbsp;&nbsp;&nbsp;&nbsp;月营业额</el-menu-item>
+									<el-menu-item index="1-2">&nbsp;&nbsp;&nbsp;&nbsp;贷款报表</el-menu-item>
+								</el-menu-item-group>
+							</el-submenu>
+							<el-submenu index="6">
+								<template slot="title">
+									<i class="el-icon-menu"></i>
+									<span slot="title">日志管理</span>
+								</template>
+							</el-submenu>
+						</el-menu>
+					</el-aside>
+					<div>
+						<iframe id="show-iframe" height="100%" width="1700px"  name="showSon" src="sys_user.html"></iframe>
+					</div> 
+				</el-container>
+			</el-container>
+		</div>
+		<script>
+			var app = new Vue({
+				el: "#app",
+				data: {
+					tableData: [{
+						id: '1',
+						username: '王小虎',
+						create_time: '2019-09-03',
+						update_time: '',
+						user_status: "禁用",
+					}, {
+						id: '2',
+						username: '王小虎',
+						create_time: '2019-09-03',
+						update_time: '',
+						user_status: "禁用",
+					}, {
+						id: '3',
+						username: '王小虎',
+						create_time: '2019-09-03',
+						update_time: '',
+						user_status: "禁用",
+					}, {
+						id: '4',
+						username: '王小虎',
+						create_time: '2019-09-03',
+						update_time: '',
+						user_status: "禁用",
+					}, {
+						id: '5',
+						username: '王小虎',
+						create_time: '2019-09-03',
+						update_time: '',
+						user_status: "禁用",
+					}, {
+						id: '6',
+						username: '王小虎',
+						create_time: '2019-09-03',
+						update_time: '',
+						user_status: "禁用",
+					}, {
+						id: '7',
+						username: '王小虎',
+						create_time: '2019-09-03',
+						update_time: '',
+						user_status: "禁用",
+					}, {
+						id: '8',
+						username: '王小虎',
+						create_time: '2019-09-03',
+						update_time: '',
+						user_status: "禁用",
+					}, {
+						id: '9',
+						username: '王小虎',
+						create_time: '2019-09-03',
+						update_time: '',
+						user_status: "禁用",
+					}, {
+						id: '10',
+						username: '王小虎',
+						create_time: '2019-09-03',
+						update_time: '',
+						user_status: "禁用",
+					}],
+					options: [{
+						value: '选项1',
+						label: '黄金糕'
+					}, {
+						value: '选项2',
+						label: '双皮奶'
+					}, {
+						value: '选项3',
+						label: '蚵仔煎'
+					}]
+				},
+				mounted: {
+				},
+				methods: {
+					/* showIframe() {
+						$("#show-iframe").attr("src","Analysis.html");
+					} */
+				}
+			})
+		</script>
+	</body>
+</html>

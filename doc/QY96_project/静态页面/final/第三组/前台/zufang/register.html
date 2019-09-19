@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="css/index.css">
+	</head>
+
+	<body>
+		<div class="login-wrap" id="login">
+			<el-form :model="ruleForm" ref="ruleForm" :rules="rules" label-width="0px" class="login-container">
+				<h3 class="title">用户注册<el-button plain style="width:30%;margin-left: 70px;" @click="register" >登录</el-button></h3>
+
+				<el-form-item prop="username">
+					<el-input type="text" v-model="ruleForm.username" auto-complete="off" placeholder="账号"></el-input>
+				</el-form-item>
+				<el-form-item prop="password">
+					<el-input type="password" v-model="ruleForm.password" auto-complete="off" placeholder="密码"></el-input>
+				</el-form-item>
+				<el-form-item prop="phone">
+					<el-input type="phone" v-model.number="ruleForm.phone" auto-complete="off" placeholder="手机号"></el-input>
+				</el-form-item>
+				<el-form-item style="width:100%;">
+					<el-button type="primary" style="width:100%;" @click="save">注册</el-button>
+
+				</el-form-item>
+			</el-form>
+		</div>
+
+	</body>
+	<!-- 先引入 Vue -->
+	<script src="js/vue.js"></script>
+	<!-- 引入组件库 -->
+	<script src="js/index.js"></script>
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/global.js"></script>
+	<script>
+		new Vue({
+			el: '#login',
+			data: {
+				ruleForm: {
+					username: "",
+					password: "",
+
+				},
+				rules: {
+					username: [{
+						required: true,
+						message: '请输入用户名',
+						trigger: 'blur'
+					}],
+					password: [{
+						required: true,
+						message: '请输入用户密码',
+						trigger: 'blur'
+					}],
+					phone: [{
+						required: true,
+						message: '请输入用户手机号',
+						trigger: 'blur'
+					}, {
+						type: 'number',
+						message: '手机号必须为数字值',
+						trigger: 'blur'
+					}]
+				}
+			},
+			methods: {
+
+				register: function() {
+
+					location.href = "login.html";
+
+				},
+				save: function() {
+					var _this = this;
+					this.$refs["ruleForm"].validate(function(valid) {
+						if(valid) {
+							$.post("http://localhost/SpringJavaWeb7/user/save ", _this.ruleForm, function(res) {
+
+								_this.$notify({
+									title: '成功',
+									message: res.message,
+									type: 'success'
+								});
+							})
+						} else {
+							console.log('error submit!!');
+							return false;
+						}
+					});
+					/**/
+				}
+			}
+		});
+	</script>
+
+	<style scoped>
+		.login-wrap {
+			box-sizing: border-box;
+			width: 100%;
+			height: 700px;
+			padding-top: 10%;
+			background-image: url(img/header.jpg);
+			/* background-color: #112346; */
+			background-repeat: no-repeat;
+			background-position: center right;
+			background-size: 100%;
+		}
+		
+		.login-container {
+			border-radius: 10px;
+			margin: 0px auto;
+			width: 350px;
+			padding: 30px 35px 15px 35px;
+			background: #fff;
+			border: 1px solid #eaeaea;
+			text-align: left;
+			box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.1);
+		}
+		
+		.title {
+			margin: 0px auto 40px auto;
+			text-align: center;
+			color: #505458;
+		}
+	</style>
+
+</html>
